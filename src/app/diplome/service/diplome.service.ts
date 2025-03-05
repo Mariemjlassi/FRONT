@@ -18,22 +18,44 @@ export class DiplomeService {
   }
   
   getDiplomesByEmploye(employeId: number): Observable<Diplome[]> {
-    return this.http.get<Diplome[]>(`${this.apiUrl}/employe/${employeId}`);
+    return this.http.get<Diplome[]>(`${this.apiUrl}/employe/${employeId}`, { headers: this.headers });
   }
 
-  addDiplome(employeId: number, libelle: string, typeDiplomeId: number): Observable<Diplome> {
-    return this.http.post<Diplome>(`${this.apiUrl}/add`, { employeId, libelle, typeDiplomeId });
+  addDiplomeEmploye(employeId: number, libelle: string, typeDiplomeId: number): Observable<Diplome> {
+    return this.http.post<Diplome>(`${this.apiUrl}/add`, { employeId, libelle, typeDiplomeId }, { headers: this.headers });
   }  
 
-  updateDiplome(diplomeId: number, libelle: string, typeDiplomeId: number): Observable<Diplome> {
-    return this.http.put<Diplome>(`${this.apiUrl}/update/${diplomeId}`, { libelle, typeDiplomeId });
+  updateDiplomeEmploye(diplomeId: number, employeId: number, libelle: string, typeDiplomeId: number): Observable<Diplome> {
+    return this.http.put<Diplome>(`${this.apiUrl}/update/${diplomeId}`, { employeId, libelle, typeDiplomeId }, { headers: this.headers });
+  }
+  
+
+  deleteDiplomeEmploye(diplomeId: number, employeId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/delete/${diplomeId}/${employeId}`, { headers: this.headers });
   }
 
-  deleteDiplome(diplomeId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/delete/${diplomeId}`);
+  deleteDiplome(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.headers });
   }
+  
 
   getTypeDiplomes(): Observable<TypeDiplome[]> {
-    return this.http.get<TypeDiplome[]>(`${this.typeDiplomeUrl}/all`);
+    return this.http.get<TypeDiplome[]>(`${this.typeDiplomeUrl}/all`, { headers: this.headers });
   }
+  getAllDiplomes(): Observable<Diplome[]> {
+    return this.http.get<Diplome[]>(`${this.apiUrl}/all`, { headers: this.headers });
+  }
+
+  addDiplome(diplome: Diplome): Observable<Diplome> {
+    return this.http.post<Diplome>(`${this.apiUrl}/${diplome.typeDiplome.id}`, diplome , { headers: this.headers });
+  }
+
+  getDiplomeById(id: number): Observable<Diplome> {
+    return this.http.get<Diplome>(`${this.apiUrl}/${id}`, { headers: this.headers });
+  }
+
+  updateDiplome(id: number, diplomeRequest: DiplomeRequest): Observable<Diplome> {
+    return this.http.put<Diplome>(`${this.apiUrl}/${id}`, diplomeRequest, { headers: this.headers });
+  }
+  
 }

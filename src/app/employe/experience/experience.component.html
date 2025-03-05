@@ -119,18 +119,9 @@
         <p-splitter [style]="{ height: '700px' }" styleClass="mb-8">
             <ng-template #panel>
                 <div class="list-container">
-                    <p-button label="Ajouter experience assad" 
-                    icon="pi pi-plus" 
-                    class="p-button-outlined p-button-text p-mr-2" 
-                    (click)="showDialogAddAssad()"
-                    [ngStyle]="{
-                        'background-color': 'transparent', 
-                        'border': '1px solid #ccc', 
-                        'color': '#333', 
-                        'box-shadow': 'none', 
-                        'transition': 'all 0.3s ease'
-                    }">
-          </p-button>
+                    
+          <p-button label="Ajouter experience assad"  icon="pi pi-plus" severity="secondary" (click)="showDialogAddAssad()"></p-button>
+
 
           <h3 class="section-title">Liste des Expériences Assad</h3>
 
@@ -186,7 +177,7 @@
             <ng-template #panel>
                 <div class="list-container">
 
-                    <p-button label="Ajouter Expérience Antérieure" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="showDialogAddAnterieure()"></p-button>
+                    <p-button label="Ajouter experience Antérieure"  icon="pi pi-plus" severity="secondary" (click)="showDialogAddAnterieure()"></p-button>
 
                     
                     <h3 class="section-title"

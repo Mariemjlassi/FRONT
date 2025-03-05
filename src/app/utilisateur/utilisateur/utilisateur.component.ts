@@ -130,6 +130,11 @@ export class UtilisateurComponent implements OnInit{
     });
   }
 
+  displayResetPasswordDialog: boolean = false;
+  openResetPasswordDialog(): void {
+    this.displayResetPasswordDialog = true;
+  }
+
   capitalizeFirstLetter(role: string): string {
     if (!role) return role;
     return role.charAt(0).toUpperCase() + role.slice(1).toLowerCase();

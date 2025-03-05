@@ -26,7 +26,7 @@
             <i class="pi pi-users"></i> Employés 
           </a>
         </li>
-        <li *ngIf="isRH()">
+        <li *ngIf="isResponsable()">
           <a href="/notifications">
             <i class="pi pi-bell text-3xl" *ngIf="notifications.length > 0" pBadge [value]="notifications.length" [severity]="'danger'"></i>
             <i class="pi pi-bell text-3xl" *ngIf="notifications.length === 0"></i> Notifications
@@ -45,7 +45,7 @@
           </a>
         </li>
         <li *ngIf="isRH()">
-          <a href="/diplomes">
+          <a href="/gerer-diplomes">
             <i class="pi pi-graduation-cap"></i> Les Diplômes
           </a>
         </li>

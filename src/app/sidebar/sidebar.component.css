@@ -22,7 +22,7 @@ body {
   display: flex;
   overflow-x: hidden;
   flex-direction: column;
-  background: #FBFBFB;
+  background: #060930;
   padding: 25px 20px;
   transition: all 0.4s ease;
 }
@@ -42,7 +42,7 @@ body {
 }
 
 .sidebar .sidebar-header h2 {
-  color: #000000;
+  color: #ffffff;
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -50,7 +50,7 @@ body {
 }
 
 .sidebar-links h4 {
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   white-space: nowrap;
   margin: 10px 0;
@@ -73,7 +73,7 @@ body {
   height: 1px;
   transform: scaleX(1);
   transform: translateY(-50%);
-  background: #000000;
+  background: #ffffff;
   transform-origin: right;
   transition-delay: 0.2s;
 }
@@ -99,7 +99,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0 20px;
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   white-space: nowrap;
   padding: 15px 10px;
@@ -108,8 +108,7 @@ body {
 }
 
 .sidebar-links li a:hover {
-  color: #161a2d;
-  background: #62d4fd3f;
+  color: #4e63cf;
   border-radius: 4px;
 }
 

@@ -41,6 +41,10 @@ export class SidebarComponent  implements OnInit{
     return this.userRole === 'DIRECTEUR';
   }
 
+  isResponsable(): boolean {
+    return this.userRole === 'RESPONSABLE';
+  }
+
   logout() {
     this.authService.logout();
   }

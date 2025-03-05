@@ -4,6 +4,6 @@ export interface Diplome {
   id?: number;
   libelle: string;
   employeId?: number;
-  typeDiplome?: TypeDiplome | null;
+  typeDiplome: TypeDiplome ;
   }
   

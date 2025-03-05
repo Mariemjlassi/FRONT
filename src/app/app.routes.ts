@@ -25,6 +25,10 @@ import { UtilisateurComponent } from './utilisateur/utilisateur/utilisateur.comp
 import { RecrutementComponent } from './compatibilte/recrutement/recrutement.component';
 import { ListNotificationsComponent } from './notification/list-notifications/list-notifications.component';
 import { guardGuard } from './auth/guard/guard.guard';
+import { FormationComponent } from './formation/formation.component';
+import { GererDiplomeComponent } from './diplome/gerer-diplome/gerer-diplome.component';
+import { ResetPasswordRequestComponent } from './auth/reset-password-request/reset-password-request.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 export const routes: Routes = [
@@ -44,6 +48,7 @@ export const routes: Routes = [
   { path: 'carte', component: CarteComponent },
   { path: 'list-types', component: TypeDiplomeComponent, canActivate:[guardGuard] },
   { path: 'diplomes', component: ListDiplomeComponent },
+  { path: 'gerer-diplomes', component: GererDiplomeComponent, canActivate:[guardGuard] },
   { path: 'archive-liste-typediplome', component: ArchiveListeTypediplomeComponent },
   { path: 'list-Poste', component: ListPosteComponent },
   { path: 'archive-liste-Poste', component: ArchiveListPosteComponent },
@@ -55,5 +60,8 @@ export const routes: Routes = [
   { path: 'compatibilite/:posteId', component: RecrutementComponent },
   { path: 'chart', component: RecrutementComponent },
   { path: 'notifications', component:ListNotificationsComponent},
+  { path: 'Formation', component:FormationComponent},
+  { path: 'request-password-reset', component: ResetPasswordRequestComponent },
+  { path: 'reset-password', component: ResetPasswordComponent }
 
 ];
