@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -8,7 +8,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { Diplome } from '../model/diplome';
 import { TypeDiplome } from '../model/type-diplome';
@@ -19,14 +19,24 @@ import { DiplomeRequest } from '../model/diplome-request';
 @Component({
   selector: 'app-gerer-diplome',
   imports: [
-    CommonModule, FormsModule, TableModule, DialogModule, ButtonModule, 
-    InputTextModule, DropdownModule, PaginatorModule, ToastModule, ConfirmDialogModule
+    CommonModule,
+    FormsModule,
+    TableModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    PaginatorModule,
+    ToastModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './gerer-diplome.component.html',
   styleUrl: './gerer-diplome.component.css',
   providers: [MessageService, ConfirmationService],
 })
-export class GererDiplomeComponent implements OnInit{
+export class GererDiplomeComponent implements OnInit {
+  globalFilter: string = '';
+  @ViewChild('dt') dt: Table | undefined; // dt peut être undefined
   diplomes: Diplome[] = [];
   typeDiplomes: TypeDiplome[] = [];
   visible = false;
@@ -45,6 +55,13 @@ export class GererDiplomeComponent implements OnInit{
   ngOnInit(): void {
     this.getAllDiplomes();
     this.getAllTypeDiplomes();
+  }
+  applyFilter(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.globalFilter = input.value;
+    if (this.dt) {
+      this.dt.filterGlobal(this.globalFilter, 'contains');
+    }
   }
 
   getAllDiplomes(): void {
@@ -69,11 +86,15 @@ export class GererDiplomeComponent implements OnInit{
     if (form.invalid || !this.selectedTypeId) return;
     const newDiplome: Diplome = {
       libelle: this.libelleDiplome,
-      typeDiplome: { id: this.selectedTypeId } as TypeDiplome
+      typeDiplome: { id: this.selectedTypeId } as TypeDiplome,
     };
     this.diplomeService.addDiplome(newDiplome).subscribe(() => {
       this.getAllDiplomes();
-      this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Diplôme ajouté avec succès' });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Diplôme ajouté avec succès',
+      });
       this.visible = false;
       form.resetForm();
     });
@@ -91,28 +112,59 @@ export class GererDiplomeComponent implements OnInit{
     const diplomeRequest: DiplomeRequest = {
       idType: this.selectedTypeId,
       libelleTypeDiplome: this.editingDiplome.typeDiplome.libelleTypeDiplome,
-      libelle: this.editingDiplome.libelle
+      libelle: this.editingDiplome.libelle,
     };
 
-    this.diplomeService.updateDiplome(this.editingDiplome.id!, diplomeRequest).subscribe(() => {
-      this.getAllDiplomes();
-      this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Diplôme mis à jour avec succès' });
-      this.editVisible = false;
-    });
+    this.diplomeService
+      .updateDiplome(this.editingDiplome.id!, diplomeRequest)
+      .subscribe(() => {
+        this.getAllDiplomes();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Diplôme mis à jour avec succès',
+        });
+        this.editVisible = false;
+      });
   }
 
   confirmDelete(id: number): void {
     this.confirmationService.confirm({
-      message: 'Êtes-vous sûr de vouloir supprimer ce diplôme ?',
-      accept: () => this.deleteDiplome(id),
+      header: 'Confirmation de suppression',
+      message:
+        'Êtes-vous sûr de vouloir supprimer ce diplôme ? Cette action est irréversible.',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonProps: {
+        label: 'Oui, supprimer',
+        icon: 'pi pi-check',
+        severity: 'danger',
+      },
+      rejectButtonProps: {
+        label: 'Annuler',
+        icon: 'pi pi-times',
+        severity: 'secondary',
+      },
+      accept: () => {
+        this.deleteDiplome(id);
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Annulé',
+          detail: 'Suppression annulée',
+        });
+      },
     });
   }
 
   deleteDiplome(id: number): void {
     this.diplomeService.deleteDiplome(id).subscribe(() => {
       this.getAllDiplomes();
-      this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Diplôme supprimé avec succès' });
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Diplôme supprimé avec succès',
+      });
     });
   }
-
 }

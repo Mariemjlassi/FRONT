@@ -1,3 +1,8 @@
+
+<h2>Liste des Directions</h2>
+
+<button pButton label="Ajouter une direction" icon="pi pi-plus" class="p-mb-3" (click)="showAddDirectionDialog()" severity="secondary"></button>
+
 <p-table #dt [value]="directions" selectionMode="multiple" [(selection)]="selectedDirections"
     [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
     [globalFilterFields]="['id', 'nom_direction']" [tableStyle]="{ 'min-width': '50rem' }">
@@ -5,7 +10,7 @@
     <ng-template #caption>
         <div class="flex justify-between pb-4">
             <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
+                
                 <input pInputText type="text" [(ngModel)]="searchText" (input)="dt.filterGlobal(searchText, 'contains')" placeholder="Rechercher..." />
             </span>
             <p-button icon="pi pi-external-link" label="Export" (click)="exportDirections()" />
@@ -25,15 +30,10 @@
             <td>{{ direction.id }}</td>
             <td>{{ direction.nom_direction }}</td>
             <td>
-                <!-- Bouton Modifier -->
-                <button pButton  icon="pi pi-pencil" class="p-button-primary mr-2"
-                    (click)="openEditDialog(direction)">
-                </button>
-            
-                <!-- Bouton Supprimer (Archiver) -->
-                <button pButton label="Archiver" icon="pi pi-trash" class="p-button-text p-button-danger"
-                    (click)="deleteDirection(direction)">
-                </button>
+               
+            <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(direction)"></button>
+            <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deleteDirection(direction)"></button>
+        
             </td>
             
         </tr>
@@ -71,17 +71,7 @@
 
 
 <!-- Bouton pour ajouter une nouvelle direction -->
-<div class="flex items-center justify-center h-screen">
-    <button type="button" class="button" (click)="showAddDirectionDialog()">
-        <span class="button__text">Ajouter une direction</span>
-        <span class="button__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor" height="24" fill="none" class="svg">
-                <line y2="19" y1="5" x2="12" x1="12"></line>
-                <line y2="12" y1="12" x2="19" x1="5"></line>
-            </svg>
-        </span>
-    </button>
-</div>
+
 
 <p-dialog header="Ajouter une Direction" [(visible)]="showDialog"    [style]="{ 'HEIGHT': '60rem' }">
     <div class="flex items-center gap-6 mb-6">

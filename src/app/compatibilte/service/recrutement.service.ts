@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Candidat } from '../model/candidat';
 import { Poste } from '../model/poste';
+import { AuthService } from '../../auth/service/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,27 +12,29 @@ export class RecrutementService {
 
   private apiUrlPostes = 'http://localhost:9090/recrutement/postes';
   private apiUrlCandidats = 'http://localhost:9090/recrutement/candidats';
-  private apiUrlSuggereCandidats = 'http://localhost:9090/recrutement/suggere'; // L'URL pour obtenir la liste des candidats recommandés
+  private apiUrlSuggereCandidats = 'http://localhost:9090/recrutement/suggere'; 
 
-  constructor(private http: HttpClient) { }
+  headers : any;
+  constructor(private http: HttpClient, private authservice: AuthService) {
+    this.headers = this.authservice.createAuthorizationHeader();
+  }
 
-  // Récupère tous les candidats
   getCandidats(): Observable<Candidat[]> {
-    return this.http.get<Candidat[]>(this.apiUrlCandidats);
+    return this.http.get<Candidat[]>(this.apiUrlCandidats, { headers: this.headers });
   }
 
-  // Récupérer tous les postes
+  
   getPostes(): Observable<Poste[]> {
-    return this.http.get<Poste[]>(this.apiUrlPostes);
+    return this.http.get<Poste[]>(this.apiUrlPostes, { headers: this.headers });
   }
 
-  // Récupérer un poste par son ID
+  
   getPosteById(posteId: number): Observable<Poste> {
-    return this.http.get<Poste>(`${this.apiUrlPostes}/${posteId}`);
+    return this.http.get<Poste>(`${this.apiUrlPostes}/${posteId}`, { headers: this.headers });
   }
 
-  // Récupérer la liste des candidats suggérés pour un poste
+  
   suggererCandidats(posteId: number): Observable<Candidat[]> {
-    return this.http.get<Candidat[]>(`${this.apiUrlSuggereCandidats}/${posteId}`);
+    return this.http.get<Candidat[]>(`${this.apiUrlSuggereCandidats}/${posteId}`, { headers: this.headers });
   }
 }

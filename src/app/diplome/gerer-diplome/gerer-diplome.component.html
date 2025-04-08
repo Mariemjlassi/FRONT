@@ -3,9 +3,45 @@
 <div class="card">
   <h2>Liste des Diplômes</h2>
 
-  <button pButton label="Ajouter un diplôme" icon="pi pi-plus" class="p-mb-3" (click)="visible = true"></button>
+  <!-- Conteneur pour le bouton et la recherche -->
+  <div class="flex justify-content-between align-items-center p-mb-3">
+    <!-- Champ de recherche -->
+    <form class="form">
+      <label for="search">
+        <input 
+          required="" 
+          autocomplete="off" 
+          placeholder="Rechercher..." 
+          id="search" 
+          type="text"
+          [(ngModel)]="globalFilter"
+          (input)="applyFilter($event)"
+          name="search"
+        />
+        <div class="icon">
+          <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="swap-on">
+            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linejoin="round" stroke-linecap="round"></path>
+          </svg>
+          <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="swap-off">
+            <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linejoin="round" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <button type="reset" class="close-btn" (click)="globalFilter = ''; dt?.filterGlobal('', 'contains')">
+          <svg viewBox="0 0 20 20" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
+            <path clip-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" fill-rule="evenodd"></path>
+          </svg>
+        </button>
+      </label>
+    </form>
 
-  <p-table [value]="diplomes" [paginator]="true" [rows]="10" [responsive]="true">
+    <!-- Bouton Ajouter un diplôme -->
+    <button pButton label="Ajouter un diplôme" icon="pi pi-plus" (click)="visible = true" severity="secondary"></button>
+
+  </div>
+
+  <!-- Tableau des diplômes -->
+  <p-table #dt [value]="diplomes" [paginator]="true" [rows]="10" [responsive]="true"
+    [globalFilterFields]="['libelle', 'typeDiplome.libelleTypeDiplome']" [style]="{'margin-top':'30px'}">
     <ng-template pTemplate="header">
       <tr>
         <th>Libellé</th>
@@ -20,7 +56,7 @@
         <td>{{ diplome.typeDiplome?.libelleTypeDiplome }}</td>
         <td>
           <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="showEditDialog(diplome)"></button>
-            <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="confirmDelete(diplome.id)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="confirmDelete(diplome.id)"></button>
         </td>
       </tr>
     </ng-template>
@@ -75,4 +111,6 @@
       </div>
     </form>
   </p-dialog>
-</div>
+</div><p-toast></p-toast>
+
+

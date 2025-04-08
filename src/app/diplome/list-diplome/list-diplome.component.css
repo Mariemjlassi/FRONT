@@ -1,102 +1,76 @@
-.diplome-container {
-    background: #f9f9f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Ces styles sont cohérents avec ceux de l'interface des stages */
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.card-content {
+  padding: 2rem;
+}
+
+.divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 1.5rem 0;
+}
+
+.list-container h3 {
+  margin-bottom: 1rem;
+  color: #374151;
+  font-size: 1.25rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.action-button {
+  margin: 0 0.25rem;
+}
+
+/* Styles pour les tags de type de diplôme */
+.p-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card-content {
+    padding: 1rem;
   }
   
-  .section-title {
-    font-size: 22px;
-    font-weight: bold;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 20px;
+  .p-dialog {
+    width: 90% !important;
   }
-  
-  .form-field {
-    margin-bottom: 15px;
-  }
-  
-  .form-field label {
-    display: block;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 5px;
-  }
-  
-  .p-inputtext, .p-dropdown {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-  }
-  
-  .table-container {
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .p-datatable {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  
-  .p-datatable th {
-    background: #5c8df7;
-    color: white;
-    font-weight: bold;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  .p-datatable td {
-    padding: 12px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .p-datatable tr:hover {
-    background-color: #eafaf7;
-  }
-  
-  .empty-message {
-    text-align: center;
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 10px;
-    background: #FFF3E0;
-  }
-  
-  .empty-icon {
-    font-size: 40px;
-  }
-  
-  .empty-text p {
-    margin: 5px 0;
-    color: #444;
-    font-size: 16px;
-  }
-  
-  .secondary-message {
-    font-size: 14px;
-    color: #777;
-  }
-  th {
-    font-size: 1.2rem; /* Ajuste selon le besoin */
-    font-weight: bold;
-    padding: 10px;
-  }
-  th i {
-    font-size: 1.5rem;
-  }
-    
+}

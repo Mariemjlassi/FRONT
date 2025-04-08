@@ -18,7 +18,8 @@ export class AppComponent  {
   }
 
   isExcludedRoute(): boolean {
-    // Vérifie si l'utilisateur est sur les pages de login ou signup
-    return this.router.url === '/login' || this.router.url === '/signup';
-  }
+    const excludedRoutes = ['/login', '/reset-password', '/forgot-password']; 
+    const currentUrl = this.router.url.split('?')[0]; 
+    return excludedRoutes.includes(currentUrl);
+}
 }

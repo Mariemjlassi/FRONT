@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Poste } from '../model/poste';
 import { PosteDTO } from '../model/PosteDTO';
+import { AuthService } from '../../auth/service/auth.service';
 
 
 @Injectable({
@@ -11,53 +12,53 @@ import { PosteDTO } from '../model/PosteDTO';
 export class PosteService {
   private apiUrl = `http://localhost:9090/recrutement/postes`; // Remplace `apiUrl` par l'URL de ton backend
 
-  constructor(private http: HttpClient) {}
+  headers : any;
+  constructor(private http: HttpClient, private authservice: AuthService) {
+    this.headers = this.authservice.createAuthorizationHeader();
+  }
 
   ajouterPoste(posteDTO: PosteDTO): Observable<any> {
-    return this.http.post(`${this.apiUrl}/ajouter`, posteDTO);  // Passe l'objet posteDTO en tant que body
+    return this.http.post(`${this.apiUrl}/ajouter`, posteDTO, { headers: this.headers });  // Passe l'objet posteDTO en tant que body
   }
-  // Récupérer tous les postes
+
   getAllPostes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(this.apiUrl, { headers: this.headers });
   }
 
-  // Récupérer un poste par ID
   getPosteById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers: this.headers });
   }
 
-  // Mettre à jour un poste
   updatePoste(id: number, updatedPoste: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, updatedPoste);
+    return this.http.put<any>(`${this.apiUrl}/${id}`, updatedPoste, { headers: this.headers });
   }
 
-  // Supprimer un poste
+
   
   getAllPostesnonArchives(): Observable<Poste[]> {
-    return this.http.get<Poste[]>(`${this.apiUrl}/getAllPostesnonArchivés`);
+    return this.http.get<Poste[]>(`${this.apiUrl}/getAllPostesnonArchivés`, { headers: this.headers });
   }
 
  
   getAllPostesArchives(): Observable<Poste[]> {
-    return this.http.get<Poste[]>(`${this.apiUrl}/liste-Postes-archivés`);
+    return this.http.get<Poste[]>(`${this.apiUrl}/liste-Postes-archivés`, { headers: this.headers });
   }
 
-  // 🔹 Archiver un poste
+ 
   archiverPoste(id: number): Observable<Poste> {
-    return this.http.put<Poste>(`${this.apiUrl}/${id}/archiver`, {});
+    return this.http.put<Poste>(`${this.apiUrl}/${id}/archiver`, {}, { headers: this.headers });
   }
 
-  // 🔹 Désarchiver un poste
   desarchiverPoste(id: number): Observable<Poste> {
-    return this.http.put<Poste>(`${this.apiUrl}/${id}/desarchiver`, {});
+    return this.http.put<Poste>(`${this.apiUrl}/${id}/desarchiver`, {}, { headers: this.headers });
   }
   updatePostee(id: number, posteDto: PosteDTO): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, posteDto);
+    return this.http.put(`${this.apiUrl}/${id}`, posteDto, { headers: this.headers });
   }
 
 
   getDirectionsByPosteId(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}/directions`);
+    return this.http.get<any>(`${this.apiUrl}/${id}/directions`, { headers: this.headers });
   }
 
 }

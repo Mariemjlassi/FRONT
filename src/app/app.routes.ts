@@ -18,6 +18,7 @@ import { ListDiplomeComponent } from './diplome/list-diplome/list-diplome.compon
 import { ArchiveListeTypediplomeComponent } from './Archive/archive-liste-typediplome/archive-liste-typediplome.component';
 import { ArchiveListPosteComponent } from './Archive/archive-list-poste/archive-list-poste.component';
 import { adminGuard } from './auth/guard/admin.guard';
+import { authGuard } from './auth/guard/auth.guard';
 import { ListeEmployeComponent } from './employe/liste-employe/liste-employe.component';
 import { ProfileComponent } from './employe/profile/profile.component';
 import { PosteComponent } from './employe/poste/poste.component';
@@ -27,41 +28,48 @@ import { ListNotificationsComponent } from './notification/list-notifications/li
 import { guardGuard } from './auth/guard/guard.guard';
 import { FormationComponent } from './formation/formation.component';
 import { GererDiplomeComponent } from './diplome/gerer-diplome/gerer-diplome.component';
-import { ResetPasswordRequestComponent } from './auth/reset-password-request/reset-password-request.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { PermissionsComponent } from './gestion-permissions/permissions/permissions.component';
+import { MessagesComponent } from './messagerie/messages/messages.component';
+import { MessageDetailComponent } from './messagerie/message-detail/message-detail.component';
+import { MessageComposeComponent } from './messagerie/message-compose/message-compose.component';
 
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component : SignupComponent, canActivate:[adminGuard]},
-  { path: 'sidebar', component : SidebarComponent},
+  { path: 'sidebar', component : SidebarComponent, canActivate:[authGuard]},
   { path: 'add-employe', component: AddEmployeComponent },
   { path: 'list-employe-existants', component: EmployeListComponent },
-  { path: 'list-site', component: ListSiteComponent },
-  { path: 'list-directions', component: ListDirectionComponent },
+  { path: 'list-site', component: ListSiteComponent , canActivate:[guardGuard]},
+  { path: 'list-directions', component: ListDirectionComponent, canActivate:[guardGuard] },
   { path: 'list-directions-archives', component: ArchiveListDirectionComponent },
   { path: 'archive', component: ListeArchiveComponent },
   { path: 'liste-sites-archives', component: ArchiveListSiteComponent },
   { path: 'navbarexp', component: NavbarexmplComponent },
-  { path: 'experience', component: ExperienceComponent },
+  { path: 'experience', component: ExperienceComponent, canActivate:[guardGuard] },
   { path: 'carte', component: CarteComponent },
   { path: 'list-types', component: TypeDiplomeComponent, canActivate:[guardGuard] },
-  { path: 'diplomes', component: ListDiplomeComponent },
+  { path: 'diplomes', component: ListDiplomeComponent , canActivate:[guardGuard]},
   { path: 'gerer-diplomes', component: GererDiplomeComponent, canActivate:[guardGuard] },
-  { path: 'archive-liste-typediplome', component: ArchiveListeTypediplomeComponent },
-  { path: 'list-Poste', component: ListPosteComponent },
-  { path: 'archive-liste-Poste', component: ArchiveListPosteComponent },
+  { path: 'archive-liste-typediplome', component: ArchiveListeTypediplomeComponent, canActivate:[guardGuard] },
+  { path: 'list-Poste', component: ListPosteComponent, canActivate:[guardGuard] },
+  { path: 'archive-liste-Poste', component: ArchiveListPosteComponent, canActivate:[guardGuard] },
   { path: 'ListeEmploye', component: ListeEmployeComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'poste', component: PosteComponent},
+  { path: 'poste', component: PosteComponent, canActivate:[guardGuard]},
   { path: 'list-utilisateurs', component:UtilisateurComponent},
-  { path: 'register/:role',component:SignupComponent},
-  { path: 'compatibilite/:posteId', component: RecrutementComponent },
-  { path: 'chart', component: RecrutementComponent },
+  { path: 'register/:role',component:SignupComponent, canActivate:[adminGuard]},
+  { path: 'compatibilite/:posteId', component: RecrutementComponent, canActivate:[guardGuard] },
+  { path: 'chart', component: RecrutementComponent, canActivate:[guardGuard] },
   { path: 'notifications', component:ListNotificationsComponent},
-  { path: 'Formation', component:FormationComponent},
-  { path: 'request-password-reset', component: ResetPasswordRequestComponent },
-  { path: 'reset-password', component: ResetPasswordComponent }
-
+  { path: 'formations', component:FormationComponent, canActivate:[guardGuard]},
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'gestion-permissions', component: PermissionsComponent},
+  { path: 'messages', component: MessagesComponent },
+  { path: 'messages/thread/:messageId', component: MessageDetailComponent },
+  { path: 'messages/nouveau', component: MessageComposeComponent },
 ];

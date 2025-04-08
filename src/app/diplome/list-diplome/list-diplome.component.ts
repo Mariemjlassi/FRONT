@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -16,12 +23,24 @@ import { TypeDiplomeService } from '../service/type-diplome.service';
 import { DiplomeService } from '../service/diplome.service';
 import { DiplomeRequest } from '../model/diplome-request';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { TagModule } from 'primeng/tag';
 @Component({
   selector: 'app-list-diplome',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, TableModule, DialogModule, ButtonModule, 
-    InputTextModule, DropdownModule, PaginatorModule,ReactiveFormsModule, ToastModule, ConfirmDialogModule, AutoCompleteModule
+    CommonModule,
+    FormsModule,
+    TableModule,
+    DialogModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule,
+    PaginatorModule,
+    ReactiveFormsModule,
+    TagModule,
+    ToastModule,
+    ConfirmDialogModule,
+    AutoCompleteModule,
   ],
   templateUrl: './list-diplome.component.html',
   styleUrl: './list-diplome.component.css',
@@ -37,82 +56,138 @@ export class ListDiplomeComponent implements OnInit {
   diplomeToEdit: Diplome | null = null;
   diplomesExistants: Diplome[] = []; // Liste des diplômes en base
   filteredDiplomes: Diplome[] = [];
-  constructor(private diplomeService: DiplomeService, private fb: FormBuilder) {}
+  editDiplomeForm: FormGroup;
+  addDiplomeVisible = false;
+  editDiplomeVisible = false;
+  
+
+  constructor(
+    private diplomeService: DiplomeService,
+    private fb: FormBuilder,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {
+    this.diplomeForm = this.fb.group({
+      libelle: ['', Validators.required],
+      typeDiplomeId: [null, Validators.required]
+    });
+    
+    this.editDiplomeForm = this.fb.group({
+      libelle: ['', Validators.required],
+      typeDiplomeId: [null, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
-    this.initForm();
     this.loadDiplomes();
     this.loadTypeDiplomes();
     this.loadAllDiplomes();
   }
 
-  initForm() {
-    this.diplomeForm = this.fb.group({
-      libelle: ['', Validators.required],
-      typeDiplomeId: [null, Validators.required], 
-    });
+  showAddDiplomeDialog(): void {
+    this.diplomeForm.reset();
+    this.addDiplomeVisible = true;
   }
+
+  showEditDiplomeDialog(diplome: Diplome): void {
+    this.diplomeToEdit = diplome;
+    this.editDiplomeForm.patchValue({
+      libelle: diplome.libelle,
+      typeDiplomeId: diplome.typeDiplome?.id
+    });
+    this.editDiplomeVisible = true;
+  }
+
+
   loadDiplomes() {
-    this.diplomeService.getDiplomesByEmploye(this.employeId).subscribe((data) => {
-      console.log("Diplômes récupérés :", data);
-      this.diplomes = data;
-    });
+    this.diplomeService
+      .getDiplomesByEmploye(this.employeId)
+      .subscribe((data) => {
+        console.log('Diplômes récupérés :', data);
+        this.diplomes = data;
+      });
   }
-  
-  
 
   loadTypeDiplomes() {
     this.diplomeService.getTypeDiplomes().subscribe((data) => {
       this.typeDiplomes = data;
-      console.log("Types de diplômes récupérés :", this.typeDiplomes);
+      console.log('Types de diplômes récupérés :', this.typeDiplomes);
     });
   }
-  
 
-  addOrUpdateDiplome() {
-    if (!this.diplomeForm.valid) {
-      console.error('Formulaire invalide');
-      return;
-    }
-  
+  addDiplome(): void {
+    if (this.diplomeForm.invalid) return;
+    
     const { libelle, typeDiplomeId } = this.diplomeForm.value;
-  
-    // Conversion de typeDiplomeId en nombre
-    const typeDiplomeIdNumber = Number(typeDiplomeId);
-    console.log("Données envoyées :", { libelle, typeDiplomeIdNumber });
-  
-    // Vérifie si l'ID du typeDiplome correspond bien à un élément existant
-    const typeDiplome = this.typeDiplomes.find(t => t.id === typeDiplomeIdNumber);
-  
-    if (!typeDiplome) {
-      console.error("Type de diplôme non trouvé", typeDiplomeIdNumber, this.typeDiplomes);
-      return;
-    }
-  
-    if (this.isEditing && this.diplomeToEdit && this.diplomeToEdit.id) {
-      this.diplomeService.updateDiplomeEmploye(this.diplomeToEdit.id, this.employeId, libelle, typeDiplomeIdNumber)
-
-        .subscribe({
-          next: () => {
-            this.loadDiplomes();
-            this.resetForm();
-          },
-          error: (err) => console.error('Erreur lors de la mise à jour du diplôme:', err)
-        });
-    } else {
-      this.diplomeService.addDiplomeEmploye(this.employeId, libelle, typeDiplomeIdNumber)
-        .subscribe({
-          next: () => {
-            this.loadDiplomes();
-            this.resetForm();
-          },
-          error: (err) => console.error('Erreur lors de l\'ajout du diplôme:', err)
-        });
-    }
+    
+    this.diplomeService.addDiplomeEmploye(this.employeId, libelle, typeDiplomeId)
+      .subscribe({
+        next: () => {
+          this.loadDiplomes();
+          this.addDiplomeVisible = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Succès',
+            detail: 'Diplôme ajouté avec succès'
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Erreur lors de l'ajout du diplôme"
+          });
+        }
+      });
   }
-  
-  
 
+  updateDiplome(): void {
+    if (this.editDiplomeForm.invalid || !this.diplomeToEdit?.id) return;
+    
+    const { libelle, typeDiplomeId } = this.editDiplomeForm.value;
+    
+    this.diplomeService.updateDiplomeEmploye(
+      this.diplomeToEdit.id,
+      this.employeId,
+      libelle,
+      typeDiplomeId
+    ).subscribe({
+      next: () => {
+        this.loadDiplomes();
+        this.editDiplomeVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Diplôme modifié avec succès'
+        });
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Erreur lors de la modification du diplôme'
+        });
+      }
+    });
+  }
+
+  confirmDelete(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer ce diplôme?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteDiplomeEmploye(id);
+      }
+    });
+  }
+
+  
+  deleteDiplomeEmploye(id: number) {
+    this.diplomeService.deleteDiplomeEmploye(id, this.employeId).subscribe(() => {
+      this.loadDiplomes();
+    });
+  }
   editDiplome(diplome: Diplome) {
     this.diplomeToEdit = diplome;
     this.isEditing = true;
@@ -122,13 +197,7 @@ export class ListDiplomeComponent implements OnInit {
     });
   }
 
-  deleteDiplomeEmploye(id: number) {
-    this.diplomeService.deleteDiplomeEmploye(id, this.employeId).subscribe(() => {
-      this.loadDiplomes();
-    });
-  }
   
-
   resetForm() {
     this.isEditing = false;
     this.diplomeToEdit = null;
@@ -140,15 +209,15 @@ export class ListDiplomeComponent implements OnInit {
       this.diplomesExistants = data;
     });
   }
-  
+
   // Filtrer les diplômes existants
   filterDiplomes(event: any) {
     let query = event.query.toLowerCase();
-    this.filteredDiplomes = this.diplomesExistants
-      .filter(d => d.libelle.toLowerCase().includes(query));
+    this.filteredDiplomes = this.diplomesExistants.filter((d) =>
+      d.libelle.toLowerCase().includes(query)
+    );
   }
-  
-  
+
   // Quand un diplôme est sélectionné, on met à jour le formulaire
   onDiplomeSelect(event: any) {
     if (event && event.value) {
@@ -158,7 +227,45 @@ export class ListDiplomeComponent implements OnInit {
       this.diplomeForm.get('libelle')?.updateValueAndValidity();
     }
   }
-  
-  
-  
+
+  // Dans votre composant
+  getTypeDiplomeIcon(type: string): string {
+    switch (type.toLowerCase()) {
+      case 'baccalauréat':
+        return 'pi pi-id-card';
+      case 'licence':
+        return 'pi pi-certificate';
+      case 'master':
+        return 'pi pi-star';
+      case 'doctorat':
+        return 'pi pi-shield';
+      default:
+        return 'pi pi-book';
+    }
+  }
+
+  getTypeDiplomeSeverity(
+    type: string
+  ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
+    switch (type.toLowerCase()) {
+      case 'baccalauréat':
+        return 'success';
+      case 'licence':
+        return 'info';
+      case 'master':
+        return 'warn';
+      case 'doctorat':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  }
+
+ 
+  focusOnFirstField() {
+    setTimeout(() => {
+      const firstField = document.getElementById('libelle');
+      if (firstField) firstField.focus();
+    }, 100);
+  }
 }

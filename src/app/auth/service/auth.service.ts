@@ -6,18 +6,15 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { authConfig } from '../../../auth.config';
 import { LoginRequest } from '../model/login-request';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
+  private baseUrl = 'http://localhost:9090/';
 
-  private baseUrl = "http://localhost:9090/";
-  
-  constructor(private http: HttpClient, private router:Router) {
-   
-   }
+  constructor(private http: HttpClient, private router: Router) {}
 
   registerRH(SignupRequest: any): Observable<any> {
-    SignupRequest.role= 'RH';
+    SignupRequest.role = 'RH';
     const url = this.baseUrl + 'signup/rh';
     const headers = this.createAuthorizationHeader();
     return this.http.post(url, SignupRequest);
@@ -36,14 +33,10 @@ export class AuthService {
     const headers = this.createAuthorizationHeader();
     return this.http.post(url, SignupRequest);
   }
-  
-
-  
 
   login(loginRequest: LoginRequest): Observable<any> {
-    return this.http.post<any>(this.baseUrl + "login", loginRequest).pipe(
-      map(response => {
-      
+    return this.http.post<any>(this.baseUrl + 'login', loginRequest).pipe(
+      map((response) => {
         if (response && response.jwt) {
           localStorage.setItem('jwt', response.jwt);
           localStorage.setItem('userId', response.utilisateurId);
@@ -53,27 +46,38 @@ export class AuthService {
       })
     );
   }
-  
+
+  requestPasswordReset(email: string): Observable<any> {
+    const url = `${this.baseUrl}password-reset/request`;
+    return this.http.post(url, { email }, { responseType: 'text' });
+  }
+
+  resetPassword(
+    token: string,
+    newPassword: string,
+    confirmPassword: string
+  ): Observable<any> {
+    const url = `${this.baseUrl}password-reset/reset`;
+    const body = { token, newPassword, confirmPassword };
+    return this.http.post(url, body);
+  }
 
   saveTokenAndRole(token: string, roles: string): void {
     localStorage.setItem('token', token);
     localStorage.setItem('userRole', roles);
-
   }
-  
 
   getUserRole(): string | null {
     return localStorage.getItem('userRole');
-  }  
-  
+  }
 
   createAuthorizationHeader(): HttpHeaders {
     const jwtToken = localStorage.getItem('jwt');
     if (jwtToken) {
-      console.log("JWT token found in local storage", jwtToken);
-      return new HttpHeaders().set("Authorization", "Bearer " + jwtToken);
+      console.log('JWT token found in local storage', jwtToken);
+      return new HttpHeaders().set('Authorization', 'Bearer ' + jwtToken);
     } else {
-      console.log("JWT token not found in local storage");
+      console.log('JWT token not found in local storage');
       return new HttpHeaders();
     }
   }
@@ -84,15 +88,27 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('jwt');
-    console.log("token remove")
-    this.router.navigate(['/login']);
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
+    console.log('Déconnexion réussie. Tous les tokens ont été supprimés.');
+
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload();
+    });
   }
 
+  getUserId(): number | null {
+    const userId = localStorage.getItem('userId');
+    return userId ? parseInt(userId, 10) : null;
+  }
+
+  
   isLoggedIn(): boolean {
     const isLoggedIn = !!localStorage.getItem('jwt');
     if (isLoggedIn) {
     }
     return isLoggedIn;
   }
+
   
 }

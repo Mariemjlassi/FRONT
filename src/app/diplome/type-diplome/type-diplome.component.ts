@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TypeDiplome } from '../model/type-diplome';
 import { TypeDiplomeService } from '../service/type-diplome.service';
@@ -6,19 +6,25 @@ import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Valid
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputText, InputTextModule } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { Toast, ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { BrowserModule } from '@angular/platform-browser';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 
 @Component({
   selector: 'app-type-diplome',
-  imports: [CommonModule,DialogModule,ButtonModule ,TableModule,ToastModule,ReactiveFormsModule,FormsModule, InputTextModule],
+  standalone:true,
+  imports: [CommonModule,DialogModule,ButtonModule ,TableModule,ToastModule,ReactiveFormsModule,FormsModule, InputTextModule, ConfirmDialogModule],
   templateUrl: './type-diplome.component.html',
   styleUrl: './type-diplome.component.css',
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class TypeDiplomeComponent implements OnInit {
+  globalFilter: string = ''; 
+  @ViewChild('dt') dt: Table | undefined; 
   typeDiplomes: any[] = [];
   selectedTypeDiplome: any | null = null;
   visibleAdd: boolean = false;
@@ -28,7 +34,8 @@ export class TypeDiplomeComponent implements OnInit {
 
   constructor(
     private typeDiplomeService: TypeDiplomeService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.typeDiplomeForm = new FormGroup({
       libelleTypeDiplome: new FormControl('', Validators.required),
@@ -39,6 +46,13 @@ export class TypeDiplomeComponent implements OnInit {
     });
   }
 
+  applyFilter(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.globalFilter = input.value;
+    if (this.dt) {
+      this.dt.filterGlobal(this.globalFilter, 'contains');
+    }
+  }
   ngOnInit(): void {
     this.getTypeDiplomes();
   }
@@ -83,6 +97,30 @@ export class TypeDiplomeComponent implements OnInit {
       }
     );
   }
+  confirmArchiver(id: number): void {
+    this.confirmationService.confirm({
+      header: 'Confirmation d\'archivage',
+      message: 'Êtes-vous sûr de vouloir archiver ce type de diplôme ? Cette action ne pourra pas être annulée.',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonProps: {
+        label: 'Oui, archiver',
+        icon: 'pi pi-check',
+        severity: 'warn'
+      },
+      rejectButtonProps: {
+        label: 'Annuler',
+        icon: 'pi pi-times',
+        severity: 'secondary'
+      },
+      accept: () => {
+        this.archiver(id);
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'info', summary: 'Annulé', detail: 'Archivage annulé' });
+      }
+    });
+  }
+  
 
   showEditDialog(typeDiplome: any): void {
     this.selectedTypeDiplome = { ...typeDiplome };

@@ -23,6 +23,7 @@
     "@primeng/themes": "^19.0.5",
     "angular-oauth2-oidc": "^19.0.0",
     "bootstrap": "^5.3.3",
+    "cypress": "^14.1.0",
     "devextreme": "^24.2.3",
     "devextreme-angular": "^24.2.3",
     "html2canvas": "^1.4.1",

@@ -4,10 +4,13 @@ import { StageService } from '../service/stage.service';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-stage',
-  imports: [ButtonModule, FormsModule, DialogModule,ReactiveFormsModule, CommonModule],
+  imports: [ButtonModule, FormsModule, DialogModule,ReactiveFormsModule, CommonModule, InputTextModule, TableModule, CalendarModule],
   templateUrl: './stage.component.html',
   styleUrl: './stage.component.css'
 })
@@ -73,6 +76,7 @@ export class StageComponent implements OnInit{
       this.getStages();
       this.stageForm.reset();
       this.stageForm.markAsUntouched();  // Permet de remettre les champs à l’état initial
+      this.addStageVisible = false;
       this.stageUpdated.emit();
     });
   }
@@ -99,7 +103,7 @@ export class StageComponent implements OnInit{
     this.stageService.updateStage(this.selectedStage.id, updatedStage).subscribe(() => {
       console.log('Stage mis à jour avec succès');
       this.getStages();
-      this.visible = false;
+      this.editStageVisible = false;
     });
   }
 }

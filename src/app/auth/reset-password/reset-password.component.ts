@@ -1,44 +1,95 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DialogModule } from 'primeng/dialog';
+import { AuthService } from '../service/auth.service';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, FormsModule, DialogModule],
+  imports: [
+    ToastModule,
+    ButtonModule,
+    InputTextModule,
+    FloatLabelModule,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+  ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css',
-  providers:[MessageService]
+  providers: [MessageService],
 })
-export class ResetPasswordComponent {
-  token: string = '';
-  newPassword: string = '';
-  confirmPassword: string = '';
+export class ResetPasswordComponent implements OnInit {
+  resetPasswordForm!: FormGroup;
+  token!: string;
 
-  constructor(private http: HttpClient, private messageService: MessageService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
-  resetPassword() {
-    if (this.newPassword !== this.confirmPassword) {
-      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Les mots de passe ne correspondent pas' });
-      return;
+  ngOnInit(): void {
+    // Récupérer le token depuis l'URL
+    this.token = this.route.snapshot.queryParams['token'];
+
+    // Initialiser le formulaire
+    this.resetPasswordForm = this.fb.group(
+      {
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required]],
+      },
+      { validator: this.passwordsMatch }
+    );
+  }
+
+  passwordsMatch(group: FormGroup): { [key: string]: boolean } | null {
+    return group.get('newPassword')!.value ===
+      group.get('confirmPassword')!.value
+      ? null
+      : { mismatch: true };
+  }
+
+  loading = false;
+
+  onSubmit(): void {
+    if (this.resetPasswordForm.valid) {
+      this.loading = true;
+      const { newPassword, confirmPassword } = this.resetPasswordForm.value;
+      this.authService
+        .resetPassword(this.token, newPassword, confirmPassword)
+        .subscribe(
+          (response) => {
+            this.loading = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Mot de passe réinitialisé avec succès !',
+            });
+            setTimeout(() => this.router.navigate(['/login']), 2000);
+          },
+          (error) => {
+            this.loading = false;
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Échec de la réinitialisation du mot de passe.',
+            });
+          }
+        );
     }
-
-    const resetPasswordRequest = {
-      token: this.token,
-      newPassword: this.newPassword,
-      confirmPassword: this.confirmPassword
-    };
-
-    this.http.post('http://localhost:9090/utilisateurs/reset-password', resetPasswordRequest)
-      .subscribe(
-        (response: any) => {
-          this.messageService.add({ severity: 'success', summary: 'Succès', detail: response });
-        },
-        (error) => {
-          this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors de la réinitialisation du mot de passe' });
-        }
-      );
   }
 }

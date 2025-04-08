@@ -22,7 +22,7 @@ import { DropdownModule } from 'primeng/dropdown';
 export class SignupComponent implements OnInit{
 
   registerForm : any;
-
+  
   registerRequest: any = {};
   password2='';
   errorMessage: string | undefined;

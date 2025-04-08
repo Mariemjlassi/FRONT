@@ -76,6 +76,8 @@ export class ListPosteComponent implements OnInit {
       }
     );
   }
+
+  
   
   
 

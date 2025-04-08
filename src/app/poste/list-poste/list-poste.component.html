@@ -1,16 +1,24 @@
-<p-table #dt [value]="postes" selectionMode="multiple" [(selection)]="selectedPostes"
+
+<body>
+    
+</body><p-table #dt [value]="postes" selectionMode="multiple" [(selection)]="selectedPostes"
     [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
     [globalFilterFields]="['titre', 'niveauExperience', 'diplomeRequis', 'competencesRequises']"
     [tableStyle]="{ 'min-width': '50rem' }">
 
     <ng-template #caption>
         <div class="flex justify-between pb-4">
+            
             <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
+                
                 <input pInputText type="text" [(ngModel)]="searchText" (input)="dt.filterGlobal(searchText, 'contains')" placeholder="Rechercher..." />
             </span>
-            <p-button icon="pi pi-plus" label="Ajouter un Poste" class="p-button-success mr-2" (click)="openAddDialog()"></p-button>
-            <p-button icon="pi pi-external-link" label="Export" (click)="exportPostes()" />
+            
+            
+            <div class="flex gap-3">
+                <p-button icon="pi pi-plus" label="Ajouter" severity="secondary" (click)="openAddDialog()"></p-button>
+                <p-button icon="pi pi-external-link" label="Export" (click)="exportPostes()"></p-button>
+            </div>
         </div>
     </ng-template>
 
@@ -32,12 +40,11 @@
             <td>{{ poste.niveauExperience }}</td>
             <td>{{ poste.diplomeRequis }}</td>
             <td>{{ poste.competencesRequises }}</td>
+            
             <td>
-                <button pButton icon="pi pi-pencil" class="p-button-primary mr-2" (click)="openEditDialog(poste)" >
-                </button>
-                <button pButton label="Archiver" icon="pi pi-trash" class="p-button-text p-button-danger" (click)="deletePoste(poste)">
-                </button>
-            </td>
+                <button pButton icon="pi pi-pencil" class="p-button-text p-button-sm" (click)="openEditDialog(poste)"></button>
+                  <button pButton icon="pi pi-trash" class="p-button-text p-button-sm p-button-danger" (click)="deletePoste(poste)"></button>
+              </td>
         </tr>
     </ng-template>
 </p-table>

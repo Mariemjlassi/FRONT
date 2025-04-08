@@ -1,55 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
+
 <body>
-
-    <div class="container" id="container">
-        <p-toast></p-toast>
-        <div class="form-container sign-in-container">
-            <form [formGroup]="loginForm" (ngSubmit)="login()">
-                <h1 >Se Connecter</h1>
-                
-                <p-floatLabel variant="in">
-                    <input pInputText id="username" formControlName="username" class="form-control" />
-                    <label for="username">Nom d'utilisateur</label>
-                </p-floatLabel>
-                <span *ngIf="loginForm.controls['username'].invalid && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)" class="block p-error">
-                    <div *ngIf="loginForm.controls['username'].errors?.['required']">Email est requis *</div>
-                </span>
+    <div class="login-container">
+        <p-toast position="top-right"></p-toast>
         
-                <p-floatLabel variant="in">
-                    <input type="password" pInputText id="password" formControlName="password" autocomplete="off" />
-                    <label for="password">Mot de passe</label>
-                </p-floatLabel>
-                <span *ngIf="loginForm.controls['password'].invalid && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)" class="block p-error">
-                    <div *ngIf="loginForm.controls['password'].errors?.['required']">Mot de passe est requis *</div>
-                </span>
+        <div class="login-wrapper">
+            <!-- Partie gauche - Formulaire -->
+            <div class="form-section">
+                <div class="form-header">
+                    <h1 class="animate__animated animate__fadeInDown">Connexion</h1>
+                    <p class="animate__animated animate__fadeIn animate__delay-1s">Accédez à votre espace personnel</p>
+                </div>
+                
+                <form [formGroup]="loginForm" (ngSubmit)="login()" class="animate__animated animate__fadeIn animate__delay-1s">
+                    <div class="input-group">
+                        <span class="input-icon pi pi-user"></span>
+                        <input pInputText id="username" formControlName="username" placeholder="Nom d'utilisateur ou email"
+                            pTooltip="Saisissez votre identifiant" tooltipPosition="top" />
+                    </div>
+                    <span *ngIf="loginForm.controls['username'].invalid && loginForm.controls['username'].touched" class="error-message">
+                        *Identifiant requis
+                    </span>
 
-               <!----> <re-captcha
-                    #recaptcha
-                    formControlName="recaptcha"
-                    siteKey="6LetVOUqAAAAAHNoSpN1Hq8Ms7HFLEo4ief1JGF2"
-                    (resolved)="onCaptchaResolved($event!)">
+                    <div class="input-group">
+                        <span class="input-icon pi pi-lock"></span>
+                        <input type="password" pInputText id="password" formControlName="password" 
+                            placeholder="Mot de passe" autocomplete="off"
+                            pTooltip="Saisissez votre mot de passe" tooltipPosition="top" />
+                        <span class="password-toggle pi pi-eye" (click)="togglePasswordVisibility()"></span>
+                    </div>
+                    <span *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched" class="error-message">
+                        *Mot de passe requis
+                    </span>
+
+                    <div class="form-options">
+                        <a href="/forgot-password" class="forgot-password">
+                            Mot de passe oublié ?
+                        </a>
+                    </div>
+
+                    <re-captcha #recaptcha formControlName="recaptcha" class="recaptcha-container"
+                        siteKey="6LetVOUqAAAAAHNoSpN1Hq8Ms7HFLEo4ief1JGF2" 
+                        (resolved)="onCaptchaResolved($event!)">
                     </re-captcha>
 
+                    <button  type="submit" [disabled]="loginForm.invalid" 
+                        class="login-button animate__animated animate__fadeInUp animate__delay-2s">
+                        <span class="button-label">Se connecter</span>
+                        <span class="button-icon pi pi-arrow-right"></span>
+                    </button>
+                </form>
+            </div>
 
-        
-                <button type="submit" class="btn btn-login float-right" [disabled]="loginForm.invalid">Valider</button>
-            </form>
-        </div>
-        <div class="overlay-container">
-            <div class="overlay">
-                <div class="overlay-panel overlay-right">
-                    <h1>Bienvenue !</h1>
-                    <img src="/assets/singup.png" style="width: 300px;height: 200px;">
+            <!-- Partie droite - Illustration -->
+            <div class="illustration-section">
+                <div class="illustration-content">
+                    <h2 class="welcome-title">Bienvenue !</h2>
+                    <p class="welcome-text">Accédez à toutes les fonctionnalités de votre compte</p>
+                    
+                    <div class="illustration-image">
+                        <img src="/assets/singup.png" alt="Illustration connexion" 
+                            class="animate__animated animate__zoomIn animate__delay-1s">
                     </div>
-                
+                    
+                    
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,40 @@
+<!-- message-compose.component.html -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<div class="compose-container">
+  <div class="compose-header">
+    <a href="/messages"><button class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+      </button></a>
+    <h2>Nouveau message</h2>
+  </div>
+
+  <form (ngSubmit)="envoyer()" class="compose-form">
+    <div class="form-group">
+      <label for="destinataire">Destinataire</label>
+      <select id="destinataire" [(ngModel)]="message.destinataireId" name="destinataireId" required>
+        <option value="">Sélectionnez un destinataire</option>
+        <option *ngFor="let user of utilisateurs" [value]="user.id">
+          {{ user.nom }} {{ user.prenom }} ({{ user.role }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="sujet">Sujet</label>
+      <input type="text" id="sujet" [(ngModel)]="message.sujet" name="sujet" placeholder="Objet du message" required>
+    </div>
+
+    <div class="form-group">
+      <label for="contenu">Message</label>
+      <textarea id="contenu" [(ngModel)]="message.contenu" name="contenu" 
+                placeholder="Écrivez votre message ici..." required></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="cancel-btn" routerLink="/messages">Annuler</button>
+      <button type="submit" class="send-btn">
+        <i class="fas fa-paper-plane"></i> Envoyer
+      </button>
+    </div>
+  </form>
+</div>

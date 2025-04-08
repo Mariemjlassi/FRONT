@@ -5,4 +5,5 @@ export interface Utilisateur {
   email: string;
   username: string;
   role: string;
+  lastLogin: string | Date | null;
 }

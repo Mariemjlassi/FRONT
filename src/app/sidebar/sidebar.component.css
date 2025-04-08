@@ -22,7 +22,7 @@ body {
   display: flex;
   overflow-x: hidden;
   flex-direction: column;
-  background: #060930;
+  background: #EEEEEE;
   padding: 25px 20px;
   transition: all 0.4s ease;
 }
@@ -42,7 +42,7 @@ body {
 }
 
 .sidebar .sidebar-header h2 {
-  color: #ffffff;
+  color: #000000;
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -50,7 +50,7 @@ body {
 }
 
 .sidebar-links h4 {
-  color: #ffffff;
+  color: #000000;
   font-weight: 500;
   white-space: nowrap;
   margin: 10px 0;
@@ -73,7 +73,7 @@ body {
   height: 1px;
   transform: scaleX(1);
   transform: translateY(-50%);
-  background: #ffffff;
+  background: #000000;
   transform-origin: right;
   transition-delay: 0.2s;
 }
@@ -89,6 +89,7 @@ body {
   height: 80%;
   overflow-y: auto;
   scrollbar-width: none;
+  
 }
 
 .sidebar-links::-webkit-scrollbar {
@@ -99,28 +100,60 @@ body {
   display: flex;
   align-items: center;
   gap: 0 20px;
-  color: #ffffff;
+  color: #213555;
   font-weight: 500;
   white-space: nowrap;
   padding: 15px 10px;
   text-decoration: none;
-  transition: 0.2s ease;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
 }
 
 .sidebar-links li a:hover {
-  color: #4e63cf;
+  color: #B31312;
+  background-color: #f0f0f0; /* ou une couleur plus douce */
   border-radius: 4px;
+  border-left: 3px solid #B31312;
+  transform: translateX(5px); /* léger déplacement vers la droite */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-links li a.active {
+  color: #B31312;
+  background-color: rgba(179, 19, 18, 0.1);
+  border-left: 3px solid #B31312;
+  font-weight: 600;
+}
+
+.sidebar-links li a .pi-bell:hover {
+  animation: ring 0.5s ease;
+}
+
+@keyframes ring {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+
+.sidebar-links li a:hover i {
+  transform: scale(1.1);
+  color: #B31312;
 }
 
 .user-account {
   margin-top: auto;
   padding: 12px 10px;
-  margin-left: -10px;
+  margin-left: -40px;
 }
 
 .user-profile {
   display: flex;
-  align-items: center;
+  transition: all 0.3s ease;
   color: #161a2d;
 }
 
@@ -133,6 +166,7 @@ body {
 .user-profile h3 {
   font-size: 1rem;
   font-weight: 600;
+  color: rgb(157, 8, 8);;
 }
 
 .user-profile span {
@@ -145,8 +179,5 @@ body {
   white-space: nowrap;
 }
 
-.sidebar:hover .user-account {
-  background: #ffffffaa;
-  border-radius: 4px;
-}
+
 

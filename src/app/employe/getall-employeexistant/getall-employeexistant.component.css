@@ -1,117 +1,124 @@
-/* Appliquer un fond blanc à l'ensemble de la page */
-body {
-    background-color: #f8f9fa; /* Légèrement gris pour un contraste doux */
-    font-family: Arial, sans-serif;
-  }
+
   
   /* Conteneur principal */
-  div {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
   
-  /* Titre */
-  h2 {
-    color: #133E87;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Style de la table */
-  .p-datatable {
-    border: 1px solid #CBDCEB;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  /* En-tête de la table */
-  .p-datatable thead {
-    background: #608BC1;
-    color: white;
-  }
-  
-  .p-datatable th {
-    padding: 12px;
-    text-align: left;
-  }
-  
-  /* Lignes de la table */
-  .p-datatable tbody tr {
-    background: white;
-    transition: background 0.3s ease;
-  }
-  
-  /* Survol des lignes */
-  .p-datatable tbody tr:hover {
-    background: #CBDCEB;
-  }
-  
- /* 🌟 Conteneur du champ de recherche (plus large et moins haut) */
-.p-inputgroup {
-    background: white;
-    border-radius: 20px;
-    border: 2px solid #608BC1;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    width: 400px; /* 🔹 Augmentation de la largeur */
-    height: 32px; /* 🔹 Réduction de la hauteur */
-    margin-left: 0; /* 🔹 Alignement à gauche */
-    display: flex;
-    align-items: center;
+  /* From Uiverse.io by satyamchaudharydev */ 
+/* From uiverse.io by @satyamchaudharydev */
+/* this button is inspired by -- whatsapp input */
+/* == type to see fully interactive and click the close buttom to remove the text  == */
+
+.form {
+  --input-bg: #FFf;
+ /*  background of input */
+  --padding: 1.5em;
+  --rotate: 80deg;
+ /*  rotation degree of input*/
+  --gap: 2em;
+  /*  gap of items in input */
+  --icon-change-color: #15A986;
+ /*  when rotating changed icon color */
+  --height: 40px;
+ /*  height */
+  width: 200px;
+  padding-inline-end: 1em;
+ /*  change this for padding in the end of input */
+  background: var(--input-bg);
+  position: relative;
+  border-radius: 4px;
 }
 
-/* 🌟 Effet au focus */
-.p-inputgroup:focus-within {
-    border-color: #133E87;
-    box-shadow: 0 0 8px rgba(19, 62, 135, 0.3);
+.form label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--height);
 }
 
-/* 🌟 Icône de recherche */
-.p-inputgroup-addon {
-    border-radius: 20px;
-    background: #608BC1;
-    color: white;
-    padding: 7px; /* 🔹 Réduction du padding */
-    border-right: 2px solid #CBDCEB;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.form input {
+  width: 100%;
+  padding-inline-start: calc(var(--padding) + var(--gap));
+  outline: none;
+  background: none;
+  border: 0;
+}
+/* style for both icons -- search,close */
+.form svg {
+  /* display: block; */
+  color: #111;
+  transition: 0.3s cubic-bezier(.4,0,.2,1);
+  position: absolute;
+  height: 15px;
+}
+/* search icon */
+.icon {
+  position: absolute;
+  left: var(--padding);
+  transition: 0.3s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* arrow-icon*/
+.swap-off {
+  transform: rotate(-80deg);
+  opacity: 0;
+  visibility: hidden;
+}
+/* close button */
+.close-btn {
+  /* removing default bg of button */
+  background: none;
+  border: none;
+  right: calc(var(--padding) - var(--gap));
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111;
+  padding: 0.1em;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: 0.3s;
+  opacity: 0;
+  transform: scale(0);
+  visibility: hidden;
 }
 
-/* 🌟 Input de recherche */
-.p-inputtext {
-    flex: 1;
-    padding: 7px; /* 🔹 Réduction du padding */
-    border: none;
-    outline: none;
-    font-size: 14px;
-    color: #133E87;
-    transition: all 0.3s ease-in-out;
-    height: 100%; /* 🔹 Adaptation automatique à la hauteur du conteneur */
+.form input:focus ~ .icon {
+  transform: rotate(var(--rotate)) scale(1.3);
 }
 
-/* 🌟 Placeholder amélioré */
-.p-inputtext::placeholder {
-    color: #608BC1;
-    opacity: 0.7;
-    font-size: 13px;
+.form input:focus ~ .icon .swap-off {
+  opacity: 1;
+  transform: rotate(-80deg);
+  visibility: visible;
+  color: var(--icon-change-color);
 }
 
-/* 🌟 Effet de focus sur l'input */
-.p-inputtext:focus {
-    background-color: #f0f5ff;
+.form input:focus ~ .icon .swap-on {
+  opacity: 0;
+  visibility: visible;
 }
 
-  /* Boutons */
-  .p-button {
-    background: #133E87 !important;
-    color: white !important;
-    border-radius: 5px !important;
-  }
-  
-  .p-button.p-button-danger {
-    background: #d9534f !important; /* Rouge pour la suppression */
-  }
-  
+.form input:valid ~ .icon {
+  transform: scale(1.3) rotate(var(--rotate))
+}
+
+.form input:valid ~ .icon .swap-off {
+  opacity: 1;
+  visibility: visible;
+  color: var(--icon-change-color);
+}
+
+.form input:valid ~ .icon .swap-on {
+  opacity: 0;
+  visibility: visible;
+}
+
+.form input:valid ~ .close-btn {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: 0s;
+}
