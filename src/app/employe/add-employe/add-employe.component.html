@@ -194,6 +194,10 @@
   <div *ngIf="activeTab === 'poste' && selectedEmployeId !== null">
     <app-poste [employeId]="selectedEmployeId"></app-poste>
   </div>
+  <div *ngIf="activeTab === 'formations-employees' && selectedEmployeId !== null">
+    
+    <app-formation-employe [employeId]="selectedEmployeId"></app-formation-employe>
+  </div>
 
     </div>
 

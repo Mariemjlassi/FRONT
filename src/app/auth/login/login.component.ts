@@ -100,8 +100,19 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('jwt', response.jwt);
           localStorage.setItem('userId', response.utilisateurId);
 
-          if (this.loginForm.value.remember) {
-            localStorage.setItem('rememberMe', 'true');
+          if (this.authService.getUserRole() === 'RH') {
+            this.router.navigate(['/sidebar']);
+            localStorage.setItem('RHID', response.utilisateurId); // Stocker l'ID seulement si c'est un RH
+            console.log('RH ID stocké:', response.utilisateurId);
+
+            
+          } else if (this.authService.getUserRole() === 'DIRECTEUR') {
+            this.router.navigate(['/sidebar']);
+          } else if (this.authService.getUserRole() === 'RESPONSABLE') {
+            this.router.navigate(['/Formation_Responsable']);
+            localStorage.setItem('RESPONSABLEID', response.utilisateurId);
+          }else{
+            this.router.navigate(['/sidebar']);
           }
 
           const userRole = this.authService.getUserRole();

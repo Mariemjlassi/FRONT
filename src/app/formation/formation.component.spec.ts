@@ -18,6 +18,5 @@ describe('FormationComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

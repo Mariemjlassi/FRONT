@@ -49,6 +49,8 @@ import { CalendarModule } from 'primeng/calendar';
 
 import { MessageModule } from 'primeng/message';
 
+import { FormationEmployeComponent } from '../formation-employe/formation-employe.component';
+
 @Component({
   selector: 'app-add-employe',
   imports: [
@@ -81,6 +83,8 @@ import { MessageModule } from 'primeng/message';
     MessageModule,
     CalendarModule,
     MenubarModule,
+    
+    FormationEmployeComponent,
   ],
   templateUrl: './add-employe.component.html',
   styleUrls: ['./add-employe.component.css'],
@@ -172,6 +176,11 @@ export class AddEmployeComponent implements OnInit {
         icon: 'pi pi-sitemap',
         command: () => this.navigateToTab('poste'),
       },
+      {
+        label: 'Formations',
+        icon: 'pi pi-sitemap',
+        command: () => this.navigateToTab('formations-employees'),
+      },
     ];
   }
 
@@ -245,20 +254,21 @@ export class AddEmployeComponent implements OnInit {
   }
   onSubmit(): void {
     if (this.addEmployeeForm.invalid) {
-      this.addEmployeeForm.markAllAsTouched(); // Marque tous les champs comme touchés pour afficher les erreurs
-      return; // Stoppe l'exécution si le formulaire est invalide
+      this.addEmployeeForm.markAllAsTouched();  // Marque tous les champs comme touchés pour afficher les erreurs
+      return;  // Stoppe l'exécution si le formulaire est invalide
     }
-
+  
     const emp: Employe = new Employe();
-
+  
     const poste = this.addEmployeeForm.controls['Poste'].value;
     const posteId = poste && poste.id ? poste.id : 0;
-
+  
     if (!posteId) {
-      console.log("Erreur: Le poste sélectionné n'est pas valide");
+      console.log('Erreur: Le poste sélectionné n\'est pas valide');
       return;
     }
-
+    
+  
     emp.nom = this.addEmployeeForm.controls['Nom'].value;
     emp.prenom = this.addEmployeeForm.controls['Prenom'].value;
     emp.dateNaissance = this.addEmployeeForm.controls['dN'].value;
@@ -268,45 +278,40 @@ export class AddEmployeComponent implements OnInit {
     emp.email = this.addEmployeeForm.controls['email'].value;
     emp.photo = this.addEmployeeForm.controls['photo'].value;
     emp.actif = this.addEmployeeForm.controls['actif'].value === 'actif';
-
+  
     const direction = this.addEmployeeForm.controls['Direction'].value;
     const site = this.addEmployeeForm.controls['site'].value;
-
+  
     emp.direction = direction.nom_direction;
     emp.site = site.nom_site;
-
+  
     // Récupérer les dates de début et de fin
     const dateDebut = this.addEmployeeForm.controls['dateDebut'].value;
     const dateFin = this.addEmployeeForm.controls['dateFin'].value;
-
+    console.log('Poste:', posteId);
+    console.log('Direction:', direction.id);
+    console.log('Site:', site.id);
+    console.log('Date de début:', dateDebut);
+    console.log('Date de fin:', dateFin);
     console.log('Employé ajouté avec succès:', emp);
-    const employeId =
-      this.selectedEmployeId !== null ? this.selectedEmployeId : 0;
+    const employeId = this.selectedEmployeId !== null ? this.selectedEmployeId : 0;
     // Appel du service pour ajouter l'employé avec les données supplémentaires
-    this.EmoloyeService.modifierEmploye(
-      employeId,
-      posteId,
-      direction.id,
-      site.id,
-      emp,
-      dateDebut,
-      dateFin
-    ).subscribe(
+   this.EmoloyeService.modifierEmploye(employeId,posteId, direction.id, site.id, emp, dateDebut, dateFin).subscribe(
       (response) => {
         console.log('Employé ajouté avec succès:', response);
         this.showSuccessAlert = true;
-
+  
         setTimeout(() => {
           this.showSuccessAlert = false;
-          this.router.navigate(['/list-employe-existants']);
+          this.router.navigate(['/list-employe-existants']); 
         }, 5000);
       },
       (error) => {
-        console.error("Erreur lors de l'ajout de l'employé:", error);
+        console.error('Erreur lors de l\'ajout de l\'employé:', error);
       }
     );
   }
-
+  
   onSelectedFiles(event: any) {
     if (event.files && event.files.length > 0) {
       const uploadedFile = event.files[0]; // Prendre le premier fichier sélectionné

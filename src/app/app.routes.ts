@@ -35,6 +35,8 @@ import { MessagesComponent } from './messagerie/messages/messages.component';
 import { MessageDetailComponent } from './messagerie/message-detail/message-detail.component';
 import { MessageComposeComponent } from './messagerie/message-compose/message-compose.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { FormationResponsableComponent } from './formation/formation-responsable/formation-responsable.component';
+import { FormationEmployeComponent } from './employe/formation-employe/formation-employe.component';
 
 
 export const routes: Routes = [
@@ -57,7 +59,7 @@ export const routes: Routes = [
   { path: 'diplomes', component: ListDiplomeComponent , canActivate:[guardGuard]},
   { path: 'gerer-diplomes', component: GererDiplomeComponent, canActivate:[guardGuard] },
   { path: 'archive-liste-typediplome', component: ArchiveListeTypediplomeComponent, canActivate:[guardGuard] },
-  { path: 'list-Poste', component: ListPosteComponent, canActivate:[guardGuard] },
+  { path: 'list-Poste', component: ListPosteComponent},
   { path: 'archive-liste-Poste', component: ArchiveListPosteComponent, canActivate:[guardGuard] },
   { path: 'ListeEmploye', component: ListeEmployeComponent },
   { path: 'profile', component: ProfileComponent },
@@ -67,11 +69,13 @@ export const routes: Routes = [
   { path: 'compatibilite/:posteId', component: RecrutementComponent, canActivate:[guardGuard] },
   { path: 'chart', component: RecrutementComponent, canActivate:[guardGuard] },
   { path: 'notifications', component:ListNotificationsComponent},
-  { path: 'formations', component:FormationComponent, canActivate:[guardGuard]},
+  { path: 'formations', component:FormationComponent},
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'gestion-permissions', component: PermissionsComponent},
   { path: 'messages', component: MessagesComponent },
+   { path: 'formation_responsable', component:FormationResponsableComponent},
+   {path:'formations-employees', component:FormationEmployeComponent},
   { path: 'messages/thread/:messageId', component: MessageDetailComponent },
   { path: 'messages/nouveau', component: MessageComposeComponent },
 ];
