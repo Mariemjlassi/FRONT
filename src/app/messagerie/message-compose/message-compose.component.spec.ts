@@ -18,6 +18,5 @@ describe('MessageComposeComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

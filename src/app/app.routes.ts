@@ -34,6 +34,7 @@ import { PermissionsComponent } from './gestion-permissions/permissions/permissi
 import { MessagesComponent } from './messagerie/messages/messages.component';
 import { MessageDetailComponent } from './messagerie/message-detail/message-detail.component';
 import { MessageComposeComponent } from './messagerie/message-compose/message-compose.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 export const routes: Routes = [
@@ -41,6 +42,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component : SignupComponent, canActivate:[adminGuard]},
   { path: 'sidebar', component : SidebarComponent, canActivate:[authGuard]},
+  {path:'navbar', component: NavbarComponent},
   { path: 'add-employe', component: AddEmployeComponent },
   { path: 'list-employe-existants', component: EmployeListComponent },
   { path: 'list-site', component: ListSiteComponent , canActivate:[guardGuard]},

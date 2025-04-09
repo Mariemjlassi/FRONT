@@ -15,6 +15,7 @@ import { TypeDiplome } from '../model/type-diplome';
 import { TypeDiplomeService } from '../service/type-diplome.service';
 import { DiplomeService } from '../service/diplome.service';
 import { DiplomeRequest } from '../model/diplome-request';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-gerer-diplome',
@@ -29,6 +30,7 @@ import { DiplomeRequest } from '../model/diplome-request';
     PaginatorModule,
     ToastModule,
     ConfirmDialogModule,
+    TagModule
   ],
   templateUrl: './gerer-diplome.component.html',
   styleUrl: './gerer-diplome.component.css',
@@ -44,6 +46,7 @@ export class GererDiplomeComponent implements OnInit {
   selectedTypeId: number | null = null;
   libelleDiplome = '';
   editingDiplome: Diplome | null = null;
+  loading = true;
 
   constructor(
     private diplomeService: DiplomeService,
@@ -166,5 +169,14 @@ export class GererDiplomeComponent implements OnInit {
         detail: 'Diplôme supprimé avec succès',
       });
     });
+  }
+  getTypeSeverity(typeName: string | undefined): string {
+    if (!typeName) return 'info';
+    
+    const type = typeName.toLowerCase();
+    if (type.includes('licence')) return 'success';
+    if (type.includes('master')) return 'warning';
+    if (type.includes('doctorat')) return 'danger';
+    return 'info';
   }
 }

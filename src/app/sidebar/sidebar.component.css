@@ -10,7 +10,7 @@
 
 body {
   min-height: 100vh;
-  background: #ffffff;
+  background: #FCFFE7; /* Couleur de fond claire */
 }
 
 .sidebar {
@@ -22,9 +22,10 @@ body {
   display: flex;
   overflow-x: hidden;
   flex-direction: column;
-  background: #EEEEEE;
+  background: #232c5b; /* Fond bleu foncé */
   padding: 25px 20px;
   transition: all 0.4s ease;
+  color: #BAD7E9; /* Texte bleu clair */
 }
 
 .sidebar:hover {
@@ -42,7 +43,7 @@ body {
 }
 
 .sidebar .sidebar-header h2 {
-  color: #000000;
+  color: #FCFFE7; /* Texte crème */
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -50,10 +51,10 @@ body {
 }
 
 .sidebar-links h4 {
-  color: #000000;
+  color: #BAD7E9; /* Texte bleu clair */
   font-weight: 500;
   white-space: nowrap;
-  margin: 10px 0;
+  margin: 20px 0;
   position: relative;
 }
 
@@ -73,7 +74,7 @@ body {
   height: 1px;
   transform: scaleX(1);
   transform: translateY(-50%);
-  background: #000000;
+  background: #BAD7E9; /* Ligne bleu clair */
   transform-origin: right;
   transition-delay: 0.2s;
 }
@@ -89,7 +90,6 @@ body {
   height: 80%;
   overflow-y: auto;
   scrollbar-width: none;
-  
 }
 
 .sidebar-links::-webkit-scrollbar {
@@ -100,7 +100,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0 20px;
-  color: #213555;
+  color: #BAD7E9; /* Texte bleu clair */
   font-weight: 500;
   white-space: nowrap;
   padding: 15px 10px;
@@ -110,19 +110,19 @@ body {
 }
 
 .sidebar-links li a:hover {
-  color: #B31312;
-  background-color: #f0f0f0; /* ou une couleur plus douce */
+  color: #FCFFE7; /* Texte crème au survol */
+  background-color: rgba(235, 69, 95, 0.2); /* Rouge transparent */
   border-radius: 4px;
-  border-left: 3px solid #B31312;
-  transform: translateX(5px); /* léger déplacement vers la droite */
+  border-left: 3px solid #EB455F; /* Bordure rouge */
+  transform: translateX(5px);
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar-links li a.active {
-  color: #B31312;
-  background-color: rgba(179, 19, 18, 0.1);
-  border-left: 3px solid #B31312;
+  color: #FCFFE7; /* Texte crème */
+  background-color: rgba(235, 69, 95, 0.3); /* Rouge plus opaque */
+  border-left: 3px solid #EB455F; /* Bordure rouge */
   font-weight: 600;
 }
 
@@ -138,11 +138,9 @@ body {
   100% { transform: rotate(0deg); }
 }
 
-
-
 .sidebar-links li a:hover i {
   transform: scale(1.1);
-  color: #B31312;
+  color: #EB455F; /* Icônes rouges au survol */
 }
 
 .user-account {
@@ -154,30 +152,36 @@ body {
 .user-profile {
   display: flex;
   transition: all 0.3s ease;
-  color: #161a2d;
+  color: #BAD7E9; /* Texte bleu clair */
 }
 
 .user-profile img {
   width: 42px;
   border-radius: 50%;
-  
 }
 
 .user-profile h3 {
   font-size: 1rem;
   font-weight: 600;
-  color: rgb(157, 8, 8);;
+  color: #FCFFE7; /* Texte crème */
 }
 
 .user-profile span {
   font-size: 0.775rem;
   font-weight: 600;
+  color: #EB455F; /* Texte rouge */
 }
 
 .user-detail {
-  margin-left: 23px;
+  margin-left: 1px;
   white-space: nowrap;
 }
 
+/* Style pour les icônes */
+.pi {
+  color: #BAD7E9; /* Icônes bleu clair par défaut */
+}
 
-
+.sidebar-links li a:hover .pi {
+  color: #EB455F; /* Icônes rouges au survol */
+}

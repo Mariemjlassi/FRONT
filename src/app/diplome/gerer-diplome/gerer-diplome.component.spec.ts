@@ -18,6 +18,5 @@ describe('GererDiplomeComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

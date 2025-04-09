@@ -7,6 +7,8 @@
   <title>Sidebar Menu with PrimeIcons</title>
   <!-- Linking PrimeIcons -->
   <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
+  <!-- Linking CSS file -->
+  <link rel="stylesheet" href="sidebar.css" />
 </head>
 
 <body>
@@ -38,18 +40,14 @@
       <li>
         <a href="/messages" class="messagerie-item">
           <i class="pi pi-inbox"></i>
-
           Messagerie
-
         </a>
       </li>
-      <li *ngIf="isAdmin() || isRH()">
+      <li *ngIf="isAdmin() || isRH() || isDirecteur()">
         <a href="/gestion-permissions">
-          <i class="pi pi-check-circle
-          "></i> Permissions
+          <i class="pi pi-check-circle"></i> Permissions
         </a>
       </li>
-
 
       <li *ngIf="isRH()">
         <a href="list-site">
@@ -94,7 +92,7 @@
           <i class="pi pi-user-plus"></i> Ajouter un utilisateur
         </a>
       </li>
-      <li *ngIf="isRH() || isAdmin()">
+      <li *ngIf="isRH() || isAdmin() || isDirecteur()">
         <a href="/list-utilisateurs">
           <i class="pi pi-users"></i> Liste des utilisateurs
         </a>
@@ -143,19 +141,17 @@
         </a>
       </li>
       <li>
-
         <a (click)="logout()" style="cursor: pointer;">
           <i class="pi pi-sign-out"></i> Logout
         </a>
       </li>
-
     </ul>
     <div class="user-account">
       <div class="user-profile">
         <img src="/assets/user.png" alt="Profile Image" style="width: 120px; height: 80px;" />
         <div class="user-detail">
           <h3>{{ userDetails.prenom }} {{ userDetails.nom }}</h3>
-          <span style="color: rgb(33, 8, 157);">
+          <span>
             <span *ngIf="isRH()">RH ASSAD</span>
             <span *ngIf="isAdmin()">ADMIN ASSAD</span>
             <span *ngIf="isDirecteur()">DIRECTEUR ASSAD</span>
