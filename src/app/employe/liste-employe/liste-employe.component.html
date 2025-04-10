@@ -1,49 +1,87 @@
-<p-table #dt2 [value]="employes" [paginator]="true" [rows]="25" [rowsPerPageOptions]="[10, 25, 50]">
-    <ng-template #header>
-        <tr>
-            <th>Photo</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Matricule</th>
-            <th>Email</th>
-            <th>État</th>
-            <th>action</th>
-
-        </tr>
-    </ng-template>
-    <ng-template #body let-employe>
-        <tr (click)="onRowSelect(employe)" style="cursor: pointer;">
-            <td>
-                <img [src]="getPhotoUrl(employe)" alt="Photo de {{ employe.nom }}" width="50" height="50"
-                    class="profile-thumbnail" pTooltip="Voir le profil de {{ employe.nom }} {{ employe.prenom }}">
-            </td>
-            <td>{{ employe.nom }}</td>
-            <td>{{ employe.prenom }}</td>
-            <td>{{ employe.matricule }}</td>
-            <td>{{ employe.email }}</td>
-
-
-            <td>
-                <p-tag [value]="employe.actif ? 'Actif' : 'Inactif'" [severity]="getSeverity(employe.actif)"></p-tag>
-            </td>
-            <td>
-
-
-
-
-                <button pButton type="button" icon="pi pi-user-edit" (click)="goToEditEmployee(employe)"
-                    class="p-button-text" severity="warn" [pTooltip]="'Modifier ' + employe.nom + ' ' + employe.prenom">
-                </button>
-
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
-<div>
-    <p-dialog [(visible)]="displayProfile" [modal]="true"
-    [header]="'Profil de ' + selectedEmploye?.nom + ' ' + selectedEmploye?.prenom" [dismissableMask]="true"
-    styleClass="profile-dialog" [style]="{width: '80vw'}">
-    
+<div class="employee-management-container p-4">
+    <!-- Marine Card -->
+    <div class="marine-card">
+      <!-- Card Header with blue gradient -->
+      <div class="marine-card-header">
+        <div class="header-content">
+          <div class="title-container">
+            <i class="pi pi-users header-icon" style="color: #394896;"></i>
+            <h2 class="marine-title" style="color: #394896;">Liste des employés</h2>
+          </div>
+          <div class="marine-decoration">
+            <div class="marine-line"></div>
+            <span class="employee-count-badge">
+              <i class="pi pi-users"></i>
+              <span class="count-number">{{ employes ? employes.length : 0 }}</span>
+              employé(s)
+            </span>
+          </div>
+        </div>
+        
+        <!-- Barre de recherche -->
+        <div class="input-group marine-search-box" style="max-width: 300px;">
+          <span class="input-group-text bg-white border-end-0">
+          </span>
+          <input pInputText type="text"
+                 (input)="onGlobalFilter($event, dt2)"
+                 placeholder="Rechercher un employé..."
+                 class="form-control border-start-0 marine-search-input">
+        </div>
+      </div>
+      <div class="card-body p-0">
+        <p-table #dt2 [value]="employes" [paginator]="true" [rows]="8" [rowsPerPageOptions]="[8, 25, 50]"
+          styleClass="p-datatable-striped p-datatable-gridlines p-datatable-sm"
+          [globalFilterFields]="['nom', 'prenom', 'matricule', 'email']"
+          [tableStyle]="{'min-width': '60rem'}">
+  
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 80px;">Photo</th>
+                    <th pSortableColumn="nom">Nom <p-sortIcon field="nom"></p-sortIcon></th>
+                    <th pSortableColumn="prenom">Prénom <p-sortIcon field="prenom"></p-sortIcon></th>
+                    <th pSortableColumn="matricule">Matricule <p-sortIcon field="matricule"></p-sortIcon></th>
+                    <th>Email</th>
+                    <th style="width: 120px;">État</th>
+                    <th style="width: 80px;">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-employe>
+                <tr (click)="onRowSelect(employe)" class="p-selectable-row">
+                    <td>
+                        <img [src]="getPhotoUrl(employe)" alt="Photo de {{ employe.nom }}" width="50" height="50"
+                            class="rounded-circle border" 
+                            pTooltip="Voir le profil de {{ employe.nom }} {{ employe.prenom }}"
+                            tooltipPosition="top">
+                    </td>
+                    <td>{{ employe.nom }}</td>
+                    <td>{{ employe.prenom }}</td>
+                    <td>{{ employe.matricule }}</td>
+                    <td>{{ employe.email }}</td>
+                    <td>
+                        <p-tag [value]="employe.actif ? 'Actif' : 'Inactif'" 
+                               [severity]="employe.actif ? 'success' : 'danger'"
+                               styleClass="p-tag-rounded"></p-tag>
+                    </td>
+                    <td>
+                        <button pButton type="button" icon="pi pi-user-edit" (click)="goToEditEmployee(employe)"
+                            class="p-button-rounded p-button-text p-button-sm p-button-secondary" 
+                            [pTooltip]="'Modifier ' + employe.nom + ' ' + employe.prenom"
+                            tooltipPosition="top">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7" class="text-center py-4">Aucun employé trouvé</td>
+                </tr>
+            </ng-template>
+        </p-table>
+      </div>
+    </div>
+</div>
+    <p-dialog [(visible)]="displayProfile" [modal]="true" [header]="selectedEmploye?.nom + ' ' + selectedEmploye?.prenom" 
+    [style]="{width: '80vw'}">
     
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css"

@@ -267,12 +267,12 @@
             
             <div class="form-group">
                 <label>Poste</label>
-                <p-dropdown [options]="postes" formControlName="poste" optionLabel="titre"></p-dropdown>
+                <p-dropdown [options]="postes" formControlName="postes" optionLabel="titre"></p-dropdown>
             </div>
             
             <div class="form-group">
                 <label>Direction</label>
-                <p-dropdown [options]="directions" formControlName="direction" optionLabel="nom_direction"></p-dropdown>
+                <p-dropdown [options]="directions" formControlName="directions" optionLabel="nom_direction"></p-dropdown>
             </div>
             
             <div class="form-group">
@@ -288,6 +288,7 @@
     </div>
 </div>
 
+<!-- Ajoutez cette section pour la modification des expériences antérieures -->
 <!-- Ajoutez cette section pour la modification des expériences antérieures -->
 <div *ngIf="editingAnterieure" class="edit-experience-container">
     <div class="edit-experience-card">
@@ -306,17 +307,17 @@
             
             <div class="form-group">
                 <label>Poste</label>
-                <p-dropdown [options]="postes" formControlName="poste" optionLabel="titre"></p-dropdown>
+                <p-dropdown [options]="postes" formControlName="postes" optionLabel="titre"></p-dropdown>
             </div>
             
             <div class="form-group">
                 <label>Société</label>
-                <input type="text" formControlName="societe" class="form-control">
+                <input pInputText type="text" formControlName="societe" class="form-control">
             </div>
             
             <div class="form-actions">
-                <button pbutton type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
-                <button pbutton type="submit" class="btn btn-primary">Enregistrer</button>
+                <button pButton type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
+                <button pButton type="submit" class="btn btn-primary">Enregistrer</button>
             </div>
         </form>
     </div>

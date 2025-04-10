@@ -98,6 +98,10 @@ export class MessagesComponent implements OnInit {
 
 messagesEnvoyes: MessageDto[] = [];
 
+
+getAvatarColor(id: number): number {
+  return id % 6; // Retourne un nombre entre 0 et 5 pour les couleurs d'avatar
+}
 loadMessages() {
   if (this.activeCategory === 'recus') {
     this.messageService.getRecus(this.userId).subscribe(res => {

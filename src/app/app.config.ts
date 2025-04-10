@@ -8,11 +8,15 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { MyPreset } from '../MyPrset';
 import { authConfig } from '../auth.config';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    
+    provideAnimations(),
+    providePrimeNG(),
     importProvidersFrom(HttpClientModule, OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: ['http://localhost:9090/'],

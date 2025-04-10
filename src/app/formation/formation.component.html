@@ -1137,7 +1137,18 @@ body {
 </div>
 <br>
 <div class="date-container">
-
+  <div class="p-field">
+    <label for="sousTypeFormation">Sous-Type de Formation</label>
+    <p-dropdown id="sousTypeFormation" formControlName="sousTypeFormation" [options]="sousTypeFormations"
+    placeholder="Sélectionner un sous-type" [showClear]="true" [filter]="true" filterPlaceholder="Rechercher un sous-type"
+    (onChange)="onSousTypeChange($event.value)">
+  </p-dropdown>
+    <br>
+    <small *ngIf="formationForm.get('sousTypeFormation')?.invalid && formationForm.get('sousTypeFormation')?.touched" class="p-error">
+      Le sous-type de formation est obligatoire.
+    </small>
+  </div>
+</div>
       <!-- Champ Type de Formation -->
       <div class="p-field">
         <label for="typeFormation">Type de Formation</label>
@@ -1153,18 +1164,7 @@ body {
       </div>
 
       <!-- Champ Sous-Type de Formation -->
-      <div class="p-field">
-        <label for="sousTypeFormation">Sous-Type de Formation</label>
-        <p-dropdown id="sousTypeFormation" formControlName="sousTypeFormation" [options]="sousTypeFormations"
-        placeholder="Sélectionner un sous-type" [showClear]="true" [filter]="true" filterPlaceholder="Rechercher un sous-type"
-        (onChange)="onSousTypeChange($event.value)">
-      </p-dropdown>
-        <br>
-        <small *ngIf="formationForm.get('sousTypeFormation')?.invalid && formationForm.get('sousTypeFormation')?.touched" class="p-error">
-          Le sous-type de formation est obligatoire.
-        </small>
-      </div>
-    </div>
+      
     <br>
       <div class="date-container">
         <!-- Champ Date de début -->

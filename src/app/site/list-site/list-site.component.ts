@@ -46,7 +46,7 @@ export class ListSiteComponent implements OnInit {
   selectedDirections: Direction[] = [];
   postes: Poste[] = [];
   selectedPostes: Poste[] = [];
-
+  searchText: string = '';
   @ViewChild('dt') dt!: Table;
   mapHeight: string = '300px'; // Valeur initiale de la carte
 
@@ -96,7 +96,7 @@ export class ListSiteComponent implements OnInit {
       {
         label: 'Delete',
         icon: 'pi pi-trash',
-        command: () => this.deleteSite(site) // Passer l'objet complet
+        command: () => this.archiveSite(site) // Passer l'objet complet
       },
       {
         label: 'Edit',
@@ -107,46 +107,27 @@ export class ListSiteComponent implements OnInit {
   }
 
 
- deleteSite(site: Site): void {
-   if (site.id === undefined) {
-     console.error("Impossible de archiver : l'ID du site est indéfini.");
-     return;
-   }
- 
-   if (confirm(`Voulez-vous vraiment archiver la direction ${site.nom_site} ?`)) {
-     // Appel du service pour archiver la direction
-     this.siteService.archiverSite(site.id).subscribe({
-       next: (response) => {
-         // Une fois archivée, mettez à jour localement la direction
-         site.archive = true;
-         console.log('Direction archivée avec succès', response);
-       },
-       error: (err) => {
-         console.error('Erreur lors de l\'archivage de la direction', err);
-       }
-     });
-   }
- }
-
- // Méthode pour archiver un site
-// Méthode pour archiver un site
-archiveSite(site: Site): void {
-  if (site.id !== undefined) {
-    if (confirm(`Voulez-vous vraiment archiver le site ${site.nom_site} ?`)) {
-      this.siteService.archiverSite(site.id).subscribe({
-        next: (response) => {
-          site.archive = true;
-          console.log('Site archivé avec succès', response);
-        },
-        error: (err) => {
-          console.error('Erreur lors de l\'archivage du site', err);
-        }
-      });
+  archiveSite(site: Site): void {
+    if (site.id !== undefined) {
+      if (confirm(`Voulez-vous vraiment archiver le site ${site.nom_site} ?`)) {
+        // Appel de la méthode du service pour archiver le site
+        this.siteService.archiverSite(site.id).subscribe({
+          next: (response) => {
+            // Une fois archivé, mettre à jour localement la propriété 'archive'
+            site.archive = true;  // Mise à jour du site localement
+            console.log('Site archivé avec succès', response);
+            this.getSites(); 
+          },
+          error: (err) => {
+            console.error('Erreur lors de l\'archivage du site', err);
+          }
+        });
+      }
+    } else {
+      console.error('L\'ID du site est indéfini');
     }
-  } else {
-    console.error('L\'ID du site est indéfini');
   }
-}
+  
 
 
 // Méthode pour éditer un site
@@ -161,36 +142,29 @@ editSite(site: Site): void {
     this.newSite = { id: 0, nom_site: '', archive: false }; // Réinitialiser le modèle
     this.selectedDirections = [];
   }
- /* updateSite(): void {
-    if (!this.selectedSite || this.selectedSite.id === undefined) {
-      console.error("Impossible de mettre à jour : l'ID du site est indéfini.");
-      return;
-    }
-  
-    // Créer un objet SiteRequest avec les données nécessaires
-    const updatedSiteRequest: SiteRequest = {
-      nom_site: this.selectedSite.nom_site,
-      // Filtrer les éléments undefined dans selectedDirections avant de récupérer les ids
-      directionIds: this.selectedDirections
-        .map(direction => direction.id)  // Extraire les IDs
-        .filter((id): id is number => id !== undefined),  // Filtrer uniquement les IDs définis
-      postesIds: this.selectedPostes
-        .map(poste => poste.id)  // Extraire les IDs des postes
-        .filter(id => id !== undefined)  // Filtrer les IDs définis
-    };
-  
-    this.siteService.updateSite(this.selectedSite.id, updatedSiteRequest).subscribe({
-      next: updatedSite => {
-        const index = this.sites.findIndex(s => s.id === updatedSite.id);
-        if (index !== -1) {
-          this.sites[index] = updatedSite; // Met à jour le site dans la liste
+// Dans list-site.component.ts
+updateSiteName(): void {
+  if (this.selectedSite.id && this.selectedSite.nom_site.trim() !== '') {
+    this.siteService.updateSiteName(this.selectedSite.id, this.selectedSite.nom_site)
+      .subscribe({
+        next: (updatedSite) => {
+          // Met à jour la liste des sites avec le nom modifié
+          const index = this.sites.findIndex(site => site.id === updatedSite.id);
+          if (index !== -1) {
+            this.sites[index] = updatedSite;  // Remplace le site avec l'ID correspondant
+          }
+          console.log('Nom du site mis à jour avec succès', updatedSite);
+          this.visible = false; // Ferme le dialogue d'édition
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour du nom du site', err);
         }
-        console.log('Mise à jour réussie:', updatedSite);
-        this.visible = false; // Ferme le dialogue après la mise à jour
-      },
-      error: err => console.error('Erreur lors de la mise à jour du site:', err)
-    });
-  }*/
+      });
+  } else {
+    alert('Le nom du site ne peut pas être vide.');
+  }
+}
+
   
 
   

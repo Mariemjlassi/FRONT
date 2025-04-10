@@ -652,14 +652,14 @@ private checkAllEmployeesEvaluated(formation: any) {
         // Position par défaut si aucune position sélectionnée
         firstPage.drawText(matriculeText, {
           x: 150,
-          y: firstPage.getHeight() - 200,
+          y: firstPage.getHeight() - 210,
           size: 12,
           color: rgb(0, 0, 0),
         });
         // Positionner le nom et prénom avec une taille différente
         firstPage.drawText(nomPrenomText, {
           x: 160,
-          y: firstPage.getHeight() - 183,
+          y: firstPage.getHeight() - 190,
           size: 14, // Taille plus grande pour le nom et prénom
           color: rgb(0, 0, 0),
         });

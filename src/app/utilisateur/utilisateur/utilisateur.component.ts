@@ -245,7 +245,9 @@ export class UtilisateurComponent implements OnInit {
     this.editMode = false;
     this.displayDialog = true;
   }
+  deleting: boolean = false;
   deleteUtilisateur(id: number): void {
+    this.deleting = true;
     this.confirmationService.confirm({
       header: 'Confirmer la suppression',
       message: 'Cette action est irréversible. Voulez-vous vraiment supprimer cet utilisateur ?',
@@ -261,19 +263,21 @@ export class UtilisateurComponent implements OnInit {
             this.filteredUsers = this.filteredUsers.filter(u => u.id !== id);
             this.totalRecords = this.filteredUsers.length;
             this.messageService.add({
-              severity: 'success',
-              summary: 'Succès',
-              detail: 'Utilisateur supprimé',
-              life: 3000
-            });
-          },
-          error: (err) => {
-            this.messageService.add({
               severity: 'error',
               summary: 'Erreur',
               detail: 'Échec de la suppression',
               life: 3000
             });
+            this.deleting = false;
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Utilisateur supprimé',
+              life: 3000
+            });
+            this.deleting = false;
           }
         });
       }

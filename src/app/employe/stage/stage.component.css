@@ -21,6 +21,22 @@
   font-size: 1.25rem;
 }
 
+.has-error input {
+  border-color: #dc3545;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
 }

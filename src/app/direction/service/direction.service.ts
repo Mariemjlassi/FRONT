@@ -31,17 +31,23 @@ export class DirectionService {
     }
 
 
-    desarchiverDirection(id: number): Observable<any> {
-      return this.http.put(`${this.apiUrl}/${id}/desarchiver`, {}, { headers: this.headers });
+    desarchiverDirection(id: number): Observable<Direction> {
+      const requestBody = { id: id };
+      return this.http.put<Direction>(`${this.apiUrl}/desarchiver`, requestBody, { headers: this.headers });
     }
-
-    archiverDirection(id: number): Observable<any> {
-      return this.http.put(`${this.apiUrl}/${id}/archiver`, {}, { headers: this.headers });
+  
+    
+    archiverDirection(id: number): Observable<Direction> {
+      // Préparez le corps de la requête avec un objet contenant l'ID
+      const requestBody = { id: id };
+  
+      // Faites une requête PUT à l'API pour archiver la direction
+      return this.http.put<Direction>(`${this.apiUrl}/archiver`, requestBody, { headers: this.headers });
     }
+  
 
-    updateDirection(id: number, directionDTO: DirectionDTO): Observable<Direction> {
-      const url = `${this.apiUrl}/${id}`;  // Construction de l'URL avec l'ID
-      return this.http.put<Direction>(url, directionDTO, { headers: this.headers });  // Requête PUT pour mettre à jour la direction
+    updateDirection(directionDTO: DirectionDTO): Observable<Direction> {
+      return this.http.put<Direction>(this.apiUrl, directionDTO, { headers: this.headers });  // Envoie de la requête PUT avec DirectionDTO dans le corps
     }
 
 

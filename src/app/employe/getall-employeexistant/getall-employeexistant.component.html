@@ -1,104 +1,120 @@
-<div>
-  <h2>Liste des employés</h2>
+<div class="employee-management-container">
+  <!-- Card with enhanced blue accents -->
+  <div class="marine-card">
+    <!-- Card Header with blue gradient -->
+    <div class="marine-card-header">
+      <div class="header-content">
+        <div class="title-container">
+          <i class="pi pi-users header-icon" style="color: #394896;"></i>
+          <h2 class="marine-title" style="color: #394896;">Liste des employés exportés</h2>
+        </div>
+        <div class="marine-decoration">
+          <div class="marine-line"></div>
+          <span class="employee-count-badge">
+            <i class="pi pi-users"></i>
+            <span class="count-number">{{ employes ? employes.length : 0 }}</span>
+            employé(s)
+          </span>
+        </div>
+      </div>
+    </div>
 
-  <!-- Table with Search -->
-  <p-table
-    #dt
-    [value]="employes"
-    [rows]="10"
-    [paginator]="true"
-    [globalFilterFields]="['nom', 'prenom', 'matricule']"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [(selection)]="selectedEmployees"
-    [rowHover]="true"
-    dataKey="matricule"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [showCurrentPageReport]="true"
-  >
-    <ng-template #caption>
-      <div class="flex items-center justify-between">
-        <!-- Nouveau design de recherche -->
-        <form class="form">
-          <label for="search">
-              <input 
-                required="" 
-                autocomplete="off" 
-                placeholder="Rechercher un employé..." 
-                id="search" 
-                type="text"
-                [(ngModel)]="globalFilter"
-                (input)="dt.filterGlobal(globalFilter, 'contains')"
-                name="search"
-              >
-              <div class="icon">
-                  <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="swap-on">
-                      <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linejoin="round" stroke-linecap="round"></path>
-                  </svg>
-                  <svg stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="swap-off">
-                      <path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linejoin="round" stroke-linecap="round"></path>
-                  </svg>
+    <div class="marine-card-content">
+      <!-- Enhanced Search with blue border -->
+      <div class="marine-search-container">
+        <div class="marine-search-box" style="border-color: #394896;">
+          <i class="pi pi-search marine-search-icon" style="color: #394896;"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="globalFilter"
+            (input)="dt.filterGlobal(globalFilter, 'contains')"
+            placeholder="Rechercher un employé..." 
+            class="marine-search-input"
+          />
+          <button 
+            *ngIf="globalFilter" 
+            class="marine-clear-search" 
+            (click)="globalFilter = ''; dt.filterGlobal('', 'contains')">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Table with blue accents -->
+      <p-table
+        #dt
+        [value]="employes"
+        [rows]="10"
+        [paginator]="true"
+        [globalFilterFields]="['nom', 'prenom', 'matricule']"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [(selection)]="selectedEmployees"
+        [rowHover]="true"
+        dataKey="matricule"
+        currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} entrées"
+        [showCurrentPageReport]="true"
+        styleClass="marine-table"
+      >
+        <!-- Table Headers with blue background -->
+        <ng-template #header>
+          <tr class="marine-table-header">
+            <th pSortableColumn="matricule" class="marine-header-cell">
+              <div class="marine-header-content">
+                <span>Matricule</span>
+                <p-sortIcon field="matricule"></p-sortIcon>
               </div>
-              <button type="reset" class="close-btn" (click)="globalFilter = ''; dt.filterGlobal('', 'contains')">
-                  <svg viewBox="0 0 20 20" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
-                      <path clip-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" fill-rule="evenodd"></path>
-                  </svg>
-              </button>
-          </label>
-        </form>
-      </div>
-    </ng-template>
+            </th>
+            <th pSortableColumn="nom" class="marine-header-cell">
+              <div class="marine-header-content">
+                <span>Nom</span>
+                <p-sortIcon field="nom"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="prenom" class="marine-header-cell">
+              <div class="marine-header-content">
+                <span>Prénom</span>
+                <p-sortIcon field="prenom"></p-sortIcon>
+              </div>
+            </th>
+            <th pSortableColumn="lieuDeNaissance" class="marine-header-cell">
+              <div class="marine-header-content">
+                <span>Lieu de naissance</span>
+                <p-sortIcon field="lieuDeNaissance"></p-sortIcon>
+              </div>
+            </th>
+          </tr>
+        </ng-template>
 
-    <!-- Table Headers and Body -->
-    <ng-template #header>
-      <tr>
-        
-        <th pSortableColumn="matricule">
-          Matricule <p-sortIcon field="matricule"></p-sortIcon>
-        </th>
-        <th pSortableColumn="nom">
-          Nom <p-sortIcon field="nom"></p-sortIcon>
-        </th>
-        <th pSortableColumn="prenom">
-          Prénom <p-sortIcon field="prenom"></p-sortIcon>
-        </th>
-        <th pSortableColumn="lieuDeNaissance">
-          Lieu de naissance <p-sortIcon field="lieuDeNaissance"></p-sortIcon>
-        </th>
-        
-        <th style="min-width: 12rem">Actions</th>
-      </tr>
-    </ng-template>
+        <!-- Table Body with blue hover effects -->
+        <ng-template #body let-employe>
+          <tr class="marine-table-row" (click)="goToEditEmployee(employe)">
+            <td class="marine-data-cell">
+              <span class="marine-matricule">{{ employe.matricule }}</span>
+            </td>
+            <td class="marine-data-cell">{{ employe.nom }}</td>
+            <td class="marine-data-cell">{{ employe.prenom }}</td>
+            <td class="marine-data-cell">{{ employe.lieuDeNaissance }}</td>
+          </tr>
+        </ng-template>
 
-    <ng-template #body let-employe>
-      <tr (click)="goToEditEmployee(employe)" style="cursor: pointer;">
-  
-        <td>{{ employe.matricule }}</td>
-        <td>{{ employe.nom }}</td>
-        <td>{{ employe.prenom }}</td>
-        <td>{{ employe.lieuDeNaissance }}</td>
-        <td>
-          <p-button
-            icon="pi pi-pencil"
-            class="mr-2"
-            [rounded]="true"
-            [outlined]="true"
-            (click)="editEmployee(employe)  ; $event.stopPropagation()"
-          />
-          <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            [rounded]="true"
-            [outlined]="true"
-            (click)="deleteEmployee(employe); $event.stopPropagation()"
-          />
-        </td>
-      </tr>
-    </ng-template>
+        <!-- Empty Message with blue icon -->
+        <ng-template #emptymessage>
+          <tr>
+            <td colspan="4" class="marine-empty-message">
+              <div class="marine-empty-content">
+                <i class="pi pi-info-circle blue-icon"></i>
+                <span>Aucun employé trouvé</span>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
 
-    <ng-template #summary>
-      <div class="flex items-center justify-between">
-        Total employés : {{ employes ? employes.length : 0 }}.
-      </div>
-    </ng-template>
-  </p-table>
+    <!-- Card Footer with blue accent line -->
+    <div class="marine-card-footer">
+      <div class="marine-footer-line"></div>
+      <div class="blue-dots"></div>
+    </div>
+  </div>
 </div>

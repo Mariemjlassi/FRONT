@@ -80,8 +80,7 @@
           </td>
           <td>
             <div class="date-cell">
-              <i class="pi pi-calendar"></i>
-              <span>{{ poste.dateFin ? (poste.dateFin | date:'dd/MM/yyyy') : 'En cours' }}</span>
+              <span>{{ poste.dateFin ? (poste.dateFin | date:'dd/MM/yyyy') : '--' }}</span>
             </div>
           </td>
           <td>
@@ -364,7 +363,7 @@
         type="button" 
         label="Annuler" 
         icon="pi pi-times" 
-        class="p-button-text"
+        class="p-button-danger"
         (click)="hideDialogUpdate()"></button>
       <button 
         pButton 

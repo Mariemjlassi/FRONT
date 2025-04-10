@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { StageService } from '../service/stage.service';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -7,12 +7,15 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-stage',
-  imports: [ButtonModule, FormsModule, DialogModule,ReactiveFormsModule, CommonModule, InputTextModule, TableModule, CalendarModule],
+  imports: [ButtonModule, FormsModule, DialogModule,ReactiveFormsModule, CommonModule, InputTextModule, TableModule, CalendarModule, ToastModule],
   templateUrl: './stage.component.html',
-  styleUrl: './stage.component.css'
+  styleUrl: './stage.component.css',
+  providers: [MessageService]
 })
 export class StageComponent implements OnInit{
   
@@ -36,7 +39,8 @@ export class StageComponent implements OnInit{
     dateFin: new FormControl('', Validators.required)
   });
 
-  constructor(private stageService: StageService) {}
+  constructor(private stageService: StageService, private messageService: MessageService) {}
+
 
   ngOnInit(): void {
     if (this.employeId) {
@@ -58,30 +62,50 @@ export class StageComponent implements OnInit{
     });
   }
 
+  dateErrorMessage: string = '';
+
   addStage() {
+    this.dateErrorMessage = '';
+  
     if (this.stageForm.invalid) {
-      console.log("Tous les champs du stage sont requis !");
+      this.stageForm.markAllAsTouched();
       return;
     }
   
     const newStage = this.stageForm.value;
   
     if (newStage.dateDebut! >= newStage.dateFin!) {
-      console.log("La date de fin doit être postérieure à la date de début !");
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur de dates',
+        detail: 'La date de fin doit être postérieure à la date de début.'
+      });
+      return;
+    }
+  
+    if (this.isOverlapping(newStage)) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Chevauchement détecté',
+        detail: 'Les dates du stage se chevauchent avec un autre stage.'
+      });
       return;
     }
   
     this.stageService.addStageToEmploye(this.employeId, newStage).subscribe(() => {
-      console.log('Stage ajouté avec succès');
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Stage ajouté avec succès.'
+      });
       this.getStages();
       this.stageForm.reset();
-      this.stageForm.markAsUntouched();  // Permet de remettre les champs à l’état initial
+      this.stageForm.markAsUntouched();
       this.addStageVisible = false;
       this.stageUpdated.emit();
     });
   }
   
-
   deleteStage(stageId: number) {
     this.stageService.removeStageFromEmploye(this.employeId, stageId).subscribe(() => {
       console.log('Stage supprimé avec succès');
@@ -106,4 +130,16 @@ export class StageComponent implements OnInit{
       this.editStageVisible = false;
     });
   }
+
+  isOverlapping(newStage: any): boolean {
+    return this.stages.some(stage => {
+      const start1 = new Date(stage.dateDebut);
+      const end1 = new Date(stage.dateFin);
+      const start2 = new Date(newStage.dateDebut);
+      const end2 = new Date(newStage.dateFin);
+  
+      return (start2 <= end1 && end2 >= start1);
+    });
+  }
+  
 }

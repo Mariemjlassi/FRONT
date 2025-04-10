@@ -58,27 +58,27 @@ export class ArchiveListDirectionComponent implements OnInit {
 
 
 
-
-deleteDirection(direction: Direction): void {
+desarchiverDirection(direction: Direction): void {
   if (direction.id === undefined) {
-    console.error("Impossible de supprimer : l'ID de la direction est indéfini.");
+    console.error("Impossible de désarchiver : l'ID de la direction est indéfini.");
     return;
   }
 
   if (confirm(`Voulez-vous vraiment désarchiver la direction ${direction.nom_direction} ?`)) {
-    // Appel du service pour archiver la direction
+    // Appel du service pour désarchiver la direction
     this.directionService.desarchiverDirection(direction.id).subscribe({
       next: (response) => {
-        // Une fois archivée, mettez à jour localement la direction
-        direction.archive = true;
-        console.log('Direction archivée avec succès', response);
+        direction.archive = false;  // Met à jour l'état de l'archive (désarchivée)
+        console.log('Direction désarchivée avec succès', response);
+        this.getDirections();
       },
       error: (err) => {
-        console.error('Erreur lors de l\'archivage de la direction', err);
+        console.error('Erreur lors de la désarchivage de la direction', err);
       }
     });
   }
 }
+
 
 
 openEditDialog(direction: Direction): void {

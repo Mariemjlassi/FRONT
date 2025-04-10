@@ -1,124 +1,309 @@
+/* Variables with strong #232c5b presence */
+:root {
+  --marine-dominant: #232c5b; /* Your dominant color */
+  --marine-dark: #152e91;
+  --marine-light: #3a477e;
+  --marine-accent: #4bc0d9;
+  --marine-bg-light: #f0f4f8;
+  --marine-text: #2d3748;
+  --marine-border: #d1d8e0;
+  --white: #ffffff;
+}
 
-  
-  /* Conteneur principal */
-  
-  /* From Uiverse.io by satyamchaudharydev */ 
-/* From uiverse.io by @satyamchaudharydev */
-/* this button is inspired by -- whatsapp input */
-/* == type to see fully interactive and click the close buttom to remove the text  == */
 
-.form {
-  --input-bg: #FFf;
- /*  background of input */
-  --padding: 1.5em;
-  --rotate: 80deg;
- /*  rotation degree of input*/
-  --gap: 2em;
-  /*  gap of items in input */
-  --icon-change-color: #15A986;
- /*  when rotating changed icon color */
-  --height: 40px;
- /*  height */
-  width: 200px;
-  padding-inline-end: 1em;
- /*  change this for padding in the end of input */
-  background: var(--input-bg);
+
+/* Marine Card - Strong color presence */
+.marine-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(35, 44, 91, 0.15);
+  overflow: hidden;
+  border: 2px solid var(--marine-dominant);
+}
+
+/* Card Header - Bold color block */
+.marine-card-header {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--marine-dominant), var(--marine-light));
+  color: var(--white);
   position: relative;
-  border-radius: 4px;
 }
 
-.form label {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: var(--height);
+.marine-card-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--marine-accent);
 }
 
-.form input {
-  width: 100%;
-  padding-inline-start: calc(var(--padding) + var(--gap));
-  outline: none;
-  background: none;
-  border: 0;
-}
-/* style for both icons -- search,close */
-.form svg {
-  /* display: block; */
-  color: #111;
-  transition: 0.3s cubic-bezier(.4,0,.2,1);
-  position: absolute;
-  height: 15px;
-}
-/* search icon */
-.icon {
-  position: absolute;
-  left: var(--padding);
-  transition: 0.3s cubic-bezier(.4,0,.2,1);
+.header-content {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.title-container {
+  display: flex;
   align-items: center;
+  gap: 1rem;
 }
-/* arrow-icon*/
-.swap-off {
-  transform: rotate(-80deg);
-  opacity: 0;
-  visibility: hidden;
+
+.header-icon {
+  font-size: 1.8rem;
+  color: var(--marine-accent);
 }
-/* close button */
-.close-btn {
-  /* removing default bg of button */
-  background: none;
+
+.marine-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.marine-decoration {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.marine-line {
+  flex-grow: 1;
+  height: 2px;
+  background: linear-gradient(90deg, var(--marine-accent), rgba(255, 255, 255, 0.3));
+}
+
+.marine-badge {
+  background-color: var(--marine-accent);
+  color: var(--marine-dominant);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Content */
+.marine-card-content {
+  padding: 2rem;
+}
+
+/* Enhanced Search - With marine accents */
+.marine-search-container {
+  margin-bottom: 2rem;
+}
+
+.marine-search-box {
+  position: relative;
+  max-width: 500px;
+  border: 2px solid var(--marine-dominant);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(13, 47, 212, 0.1);
+}
+
+.marine-search-input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
   border: none;
-  right: calc(var(--padding) - var(--gap));
-  box-sizing: border-box;
+  font-size: 1rem;
+  background-color: var(--white);
+  color: var(--marine-text);
+}
+
+.marine-search-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(35, 44, 91, 0.2);
+}
+
+.marine-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--marine-dominant);
+}
+
+.marine-clear-search {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border-color: #394896;
+  color: var(--marine-dominant);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.marine-clear-search:hover {
+  background-color: var(--marine-bg-light);
+}
+
+/* Marine Table - Strong headers */
+.marine-table .p-datatable-thead > tr > th {
+  background-color: var(--marine-dominant);
+  color: var(--white);
+  border-color: var(--marine-light);
+}
+
+.marine-table-header {
+  background-color: var(--marine-dominant);
+}
+
+.marine-header-cell {
+  padding: 1.2rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  color: var(--white);
+  text-transform: uppercase;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.marine-header-cell:hover {
+  background-color: var(--marine-light);
+}
+
+.marine-header-cell:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.marine-header-content {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #111;
-  padding: 0.1em;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  transition: 0.3s;
-  opacity: 0;
-  transform: scale(0);
-  visibility: hidden;
+  gap: 0.75rem;
 }
 
-.form input:focus ~ .icon {
-  transform: rotate(var(--rotate)) scale(1.3);
+/* Table Rows - With marine accents */
+.marine-table-row {
+  transition: all 0.2s;
+  border-bottom: 1px solid var(--marine-border);
+  background-color: var(--white);
 }
 
-.form input:focus ~ .icon .swap-off {
-  opacity: 1;
-  transform: rotate(-80deg);
-  visibility: visible;
-  color: var(--icon-change-color);
+.marine-table-row:hover {
+  background-color: rgba(35, 44, 91, 0.03);
+  box-shadow: inset 5px 0 0 0 var(--marine-accent);
 }
 
-.form input:focus ~ .icon .swap-on {
-  opacity: 0;
-  visibility: visible;
+.marine-data-cell {
+  padding: 1.2rem 1.5rem;
+  color: var(--marine-text);
+  font-size: 0.95rem;
 }
 
-.form input:valid ~ .icon {
-  transform: scale(1.3) rotate(var(--rotate))
+.marine-matricule {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--marine-dominant);
+  color: var(--white);
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: monospace;
+  letter-spacing: 0.5px;
 }
 
-.form input:valid ~ .icon .swap-off {
-  opacity: 1;
-  visibility: visible;
-  color: var(--icon-change-color);
+/* Empty Message */
+.marine-empty-message {
+  padding: 3rem;
+  text-align: center;
+  background-color: var(--white);
 }
 
-.form input:valid ~ .icon .swap-on {
-  opacity: 0;
-  visibility: visible;
+.marine-empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--marine-dominant);
 }
 
-.form input:valid ~ .close-btn {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1);
-  transition: 0s;
+.marine-empty-content i {
+  font-size: 2.5rem;
+  color: var(--marine-dominant);
+}
+
+/* Card Footer */
+.marine-card-footer {
+  padding: 1rem 2rem;
+  background-color: var(--marine-bg-light);
+}
+
+.marine-footer-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--marine-dominant), transparent);
+  opacity: 0.3;
+}
+
+/* Pagination - Marine style */
+.marine-table .p-paginator {
+  background: var(--white);
+  border: none;
+  border-top: 2px solid var(--marine-border);
+  padding: 1.2rem;
+}
+
+.marine-table .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: var(--marine-dominant);
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .marine-card-header, .marine-card-content {
+    padding: 1.2rem;
+  }
+  
+  .marine-title {
+    font-size: 1.5rem;
+  }
+  
+  .marine-search-box {
+    max-width: 100%;
+  }
+}
+.employee-count-badge {
+  background-color: #394896;
+  color: white;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.employee-count-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.employee-count-badge i {
+  font-size: 1rem;
+}
+
+.count-number {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-right: 0.25rem;
 }

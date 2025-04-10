@@ -48,7 +48,12 @@ export class ListDirectionComponent implements OnInit {
   newDirection: Direction = { id: 0, nom_direction: '', archive: false };
   editVisible: boolean = false;  // Ajout pour gérer la visibilité du formulaire d'édition
   editForm!: FormGroup;  // Ajout du formulaire réactif
-  new: DirectionDTO = { nom_direction: '', siteIds:[] };
+  new: DirectionDTO = { 
+    id: 0,  // Vous pouvez utiliser null ou 0 si nécessaire
+    nom_direction: '', 
+    siteIds: [] 
+  };
+  
   searchText: string = '';
   sites: any[] = []; 
   selectedSites: Site[] = []; // Pour contenir les sites sélectionnés
@@ -86,7 +91,7 @@ getItems(direction: Direction): MenuItem[] {
     {
       label: 'Delete',
       icon: 'pi pi-trash',
-      command: () => this.deleteDirection(direction)
+      command: () => this.archiveDirection(direction)
     },
     {
       label: 'Edit',
@@ -95,9 +100,9 @@ getItems(direction: Direction): MenuItem[] {
     }
   ];
 }
-deleteDirection(direction: Direction): void {
+archiveDirection(direction: Direction): void {
   if (direction.id === undefined) {
-    console.error("Impossible de supprimer : l'ID de la direction est indéfini.");
+    console.error("Impossible d'archiver : l'ID de la direction est indéfini.");
     return;
   }
 
@@ -105,9 +110,9 @@ deleteDirection(direction: Direction): void {
     // Appel du service pour archiver la direction
     this.directionService.archiverDirection(direction.id).subscribe({
       next: (response) => {
-        // Une fois archivée, mettez à jour localement la direction
-        direction.archive = true;
+        direction.archive = true;  // Met à jour l'état de l'archive
         console.log('Direction archivée avec succès', response);
+        this.getDirections();
       },
       error: (err) => {
         console.error('Erreur lors de l\'archivage de la direction', err);
@@ -163,28 +168,30 @@ addDirection() {
   
 updateDirection(): void {
   if (this.selectedDirection.id) {
-    const updatedDirection: DirectionDTO = {
-      nom_direction: this.selectedDirection.nom_direction,
-      siteIds: this.selectedSites
-        .map(site => site.id)
-        .filter((id): id is number => id !== undefined) // Filtre les éléments 'undefined' pour ne garder que les nombres valides
-    };
+      // Créez un DirectionDTO avec l'ID, le nom et les sites associés
+      const updatedDirectionDTO: DirectionDTO = new DirectionDTO(
+          this.selectedDirection.id,  // Assurez-vous d'ajouter l'ID ici
+          this.selectedDirection.nom_direction,  // Nom de la direction
+          this.selectedSites
+              .map(site => site.id)  // Récupère les IDs
+              .filter((id): id is number => id !== undefined)  // Filtre les valeurs undefined
+      );
 
-    // Appel du service pour mettre à jour la direction
-    this.directionService.updateDirection(this.selectedDirection.id, updatedDirection).subscribe(
-      (response) => {
-        console.log('Direction mise à jour:', response);
-        this.visible = false;
-        // Mettre à jour la direction dans la liste
-        const index = this.directions.findIndex((dir) => dir.id === this.selectedDirection.id);
-        if (index !== -1) {
-          this.directions[index] = response;
-        }
-      },
-      (error) => {
-        console.error('Erreur lors de la mise à jour de la direction', error);
-      }
-    );
+      // Appelez la méthode updateDirection avec le DTO complet
+      this.directionService.updateDirection(updatedDirectionDTO).subscribe(
+          (response) => {
+              console.log('Direction mise à jour:', response);
+              // Mettre à jour la direction dans la liste
+              this.visible = false;
+              const index = this.directions.findIndex((dir) => dir.id === this.selectedDirection.id);
+              if (index !== -1) {
+                  this.directions[index] = response;
+              }
+          },
+          (error) => {
+              console.error('Erreur lors de la mise à jour de la direction', error);
+          }
+      );
   }
 }
 

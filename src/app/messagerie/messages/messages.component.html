@@ -60,7 +60,7 @@
             <div class="message-item" *ngFor="let msg of filteredMessages" [routerLink]="['/messages/thread', msg.id]"
                 [class.unread]="!msg.lu">
                 <div class="avatar-container">
-                    <div class="custom-avatar" [class]="'avatar-' + getAvatarClass(msg.expediteur.nom)">
+                    <div class="custom-avatar" [ngClass]="'avatar-' + (msg.expediteur.id % 6)">
                       {{ getInitials(msg.expediteur.nom, msg.expediteur.prenom) }}
                     </div>
                   </div>

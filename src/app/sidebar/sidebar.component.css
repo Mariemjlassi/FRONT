@@ -9,8 +9,7 @@
 }
 
 body {
-  min-height: 100vh;
-  background: #FCFFE7; /* Couleur de fond claire */
+  min-height: 100vh;/* Couleur de fond claire */
 }
 
 .sidebar {
@@ -39,7 +38,6 @@ body {
 
 .sidebar .sidebar-header img {
   width: 42px;
-  border-radius: 50%;
 }
 
 .sidebar .sidebar-header h2 {
@@ -173,7 +171,6 @@ body {
 }
 
 .user-detail {
-  margin-left: 1px;
   white-space: nowrap;
 }
 

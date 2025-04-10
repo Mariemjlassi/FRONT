@@ -6,10 +6,11 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/service/auth.service';
 import { UtilisateurService } from '../../utilisateur/service/utilisateur.service';
 import { Utilisateur } from '../../utilisateur/model/utilisateur';
-
+import { Router, RouterModule } from '@angular/router';
+import { EditorModule } from 'primeng/editor';
 @Component({
   selector: 'app-message-compose',
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, EditorModule, RouterModule],
   templateUrl: './message-compose.component.html',
   styleUrl: './message-compose.component.css'
 })
@@ -23,7 +24,7 @@ export class MessageComposeComponent implements OnInit{
   };
 
 
-  constructor(private messageService: MessageService, private authService: AuthService, private utilisateurService: UtilisateurService) {}
+  constructor(private messageService: MessageService, private authService: AuthService, private utilisateurService: UtilisateurService, private router: Router) {}
   ngOnInit(): void {
     const id = this.authService.getUserId();
     if (id) {
@@ -37,8 +38,13 @@ export class MessageComposeComponent implements OnInit{
   }
   envoyer() {
     this.messageService.envoyer(this.message).subscribe({
-      next: res => alert('Message envoyé avec succès !'),
-      error: err => console.error(err)
+      next: (res) => {
+        this.router.navigate(['/messages']);
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Échec de l'envoi du message");
+      }
     });
   }
 }

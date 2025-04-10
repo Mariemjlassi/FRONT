@@ -14,7 +14,7 @@
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <img src="Rh.jpeg" alt="logo" />
+      <a href="/home"><img src="assad.png" alt="logo" /></a>
       <h2>RH ASSAD</h2>
     </div>
     <ul class="sidebar-links">
@@ -55,6 +55,12 @@
         </a>
       </li>
 
+      <li *ngIf="isResponsable()">
+        <a href="formations-responsable">
+          <i class="pi pi-building"></i> Les formations
+        </a>
+      </li>
+
       <li *ngIf="isRH()">
         <a href="formations">
           <i class="pi pi-desktop"></i> Les Formations
@@ -77,7 +83,7 @@
         </a>
       </li>
 
-      <li>
+      <li *ngIf="isRH()">
         <a href="/list-Poste">
           <i class="pi pi-briefcase"></i> Les postes
         </a>

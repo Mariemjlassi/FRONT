@@ -1,4 +1,5 @@
 <div class="card">
+  <p-toast></p-toast>
 
   <div class="card-content">
     <!-- Bouton pour ajouter un nouveau stage -->
@@ -50,29 +51,38 @@
               [closable]="true" 
               [dismissableMask]="true">
       <form [formGroup]="stageForm" (ngSubmit)="addStage()">
-        <div class="form-group">
-          <label for="societe">Société du Stage :</label>
-          <input pInputText id="societe" type="text" formControlName="societe" class="form-control" />
-          <small class="text-danger" *ngIf="stageForm.controls['societe'].invalid && stageForm.controls['societe'].touched">
-            *Ce champ est obligatoire.
-          </small>
-        </div>
+        <!-- Société -->
+<div class="form-group" [ngClass]="{'has-error': stageForm.controls['societe'].invalid && stageForm.controls['societe'].touched}">
+  <label for="societe">Société du Stage :</label>
+  <input pInputText id="societe" type="text" formControlName="societe" class="form-control" />
+  <small class="text-danger" *ngIf="stageForm.controls['societe'].hasError('required') && stageForm.controls['societe'].touched">
+    Ce champ est obligatoire.
+  </small>
+</div>
 
-        <div class="form-group">
-          <label for="dateDebut">Date de Début :</label>
-          <input pInputText id="dateDebut" type="date" formControlName="dateDebut" class="form-control" />
-          <small class="text-danger" *ngIf="stageForm.controls['dateDebut'].invalid && stageForm.controls['dateDebut'].touched">
-            *Ce champ est obligatoire.
-          </small>
-        </div>
+<!-- Date de début -->
+<div class="form-group" [ngClass]="{'has-error': stageForm.controls['dateDebut'].invalid && stageForm.controls['dateDebut'].touched}">
+  <label for="dateDebut">Date de Début :</label>
+  <input pInputText id="dateDebut" type="date" formControlName="dateDebut" class="form-control" />
+  <small class="text-danger" *ngIf="stageForm.controls['dateDebut'].hasError('required') && stageForm.controls['dateDebut'].touched">
+    Ce champ est obligatoire.
+  </small>
+</div>
 
-        <div class="form-group">
-          <label for="dateFin">Date de Fin :</label>
-          <input pInputText id="dateFin" type="date" formControlName="dateFin" class="form-control" />
-          <small class="text-danger" *ngIf="stageForm.controls['dateFin'].invalid && stageForm.controls['dateFin'].touched">
-            *Ce champ est obligatoire.
-          </small>
-        </div>
+<!-- Date de fin -->
+<div class="form-group" [ngClass]="{'has-error': stageForm.controls['dateFin'].invalid && stageForm.controls['dateFin'].touched}">
+  <label for="dateFin">Date de Fin :</label>
+  <input pInputText id="dateFin" type="date" formControlName="dateFin" class="form-control" />
+  <small class="text-danger" *ngIf="stageForm.controls['dateFin'].hasError('required') && stageForm.controls['dateFin'].touched">
+    Ce champ est obligatoire.
+  </small>
+</div>
+
+<!-- Erreur globale sur les dates -->
+<div *ngIf="dateErrorMessage" class="alert alert-danger mt-2">
+  {{ dateErrorMessage }}
+</div>
+
 
         <div class="form-actions">
           <button pButton type="button" (click)="addStageVisible = false" class="p-button-text" severity="danger" >Annuler</button>

@@ -251,6 +251,12 @@ goToEditEmployee(employe: any) {
     );
   }
 
+  searchText: string = '';
+  onGlobalFilter(event: Event, table: any) {
+    const input = event.target as HTMLInputElement;
+    table.filterGlobal(input.value, 'contains');
+  }
+
   getPhotoUrl(employe: any): string {
     return employe.photo ? employe.photo : (employe.sexe === 'Femme' ? 'femme.png' : 'homme.png');
   }

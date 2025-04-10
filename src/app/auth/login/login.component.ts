@@ -101,18 +101,18 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('userId', response.utilisateurId);
 
           if (this.authService.getUserRole() === 'RH') {
-            this.router.navigate(['/sidebar']);
+            this.router.navigate(['/home']);
             localStorage.setItem('RHID', response.utilisateurId); // Stocker l'ID seulement si c'est un RH
             console.log('RH ID stocké:', response.utilisateurId);
 
             
           } else if (this.authService.getUserRole() === 'DIRECTEUR') {
-            this.router.navigate(['/sidebar']);
+            this.router.navigate(['/home']);
           } else if (this.authService.getUserRole() === 'RESPONSABLE') {
-            this.router.navigate(['/Formation_Responsable']);
+            this.router.navigate(['/home']);
             localStorage.setItem('RESPONSABLEID', response.utilisateurId);
           }else{
-            this.router.navigate(['/sidebar']);
+            this.router.navigate(['/home']);
           }
 
           const userRole = this.authService.getUserRole();
@@ -126,7 +126,7 @@ export class LoginComponent implements OnInit {
           });
 
           setTimeout(() => {
-            this.router.navigate(['/sidebar']);
+            this.router.navigate(['/home']);
           }, 1000);
         },
         (error) => {

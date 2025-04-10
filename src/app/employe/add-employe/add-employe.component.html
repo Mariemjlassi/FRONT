@@ -156,18 +156,12 @@
                    
                 </div>
                 <!-- Documents Section -->
-                <div class="form-section">
-                    <h4>Documents</h4>
-                    <div class="form-group">
-                        <label for="fileUpload">Télécharger une Photo ou un Document</label>
-                        <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false" accept="image/*" maxFileSize="1000000" mode="advanced" (onSelect)="onSelectedFiles($event)" formControlName="photo"></p-fileupload>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Card Footer -->
             <div class="card-footer">
-                <button pButton type="submit" class="btn btn-success" [disabled]="addEmployeeForm.invalid" severity="primary">
+                <button  type="submit" class="btn btn-success" [disabled]="addEmployeeForm.invalid" severity="primary">
                     Ajouter l'Employé
                 </button>
             </div>

@@ -136,5 +136,9 @@ deleteDirection(site: Site): void {
     link.download = 'directions.csv';
     link.click();
   }
-
+  desarchiverSite(id: number) {
+    this.siteservice.desarchiverSite(id).subscribe(() => {
+      this.getSites();  // Recharger la liste après désarchivage
+    });
+  }
 }

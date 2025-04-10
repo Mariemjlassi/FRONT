@@ -63,7 +63,7 @@ export class ExperienceComponent implements OnInit {
   showAllAnterieure = false;
   editingAssad = false;
   editingAnterieure = false;
-
+  modesAffectation = ['CDD', 'CDI', 'Stage'];
   constructor(
     private experienceService: ExperienceService,
     private fb: FormBuilder,
