@@ -121,6 +121,6 @@ export const routes: Routes = [
   { path: 'formations-employees', component: FormationEmployeComponent },
   { path: 'messages/thread/:messageId', component: MessageDetailComponent },
   { path: 'messages/nouveau', component: MessageComposeComponent },
-  {path:'home', component:HomeComponent},
+  {path: 'home', component:HomeComponent},
   {path:'formations-responsable', component:FormationResponsableComponent}
 ];

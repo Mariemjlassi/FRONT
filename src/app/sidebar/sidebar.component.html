@@ -30,13 +30,19 @@
           <i class="pi pi-users"></i> Employés
         </a>
       </li>
-      <li *ngIf="isRH() || isResponsable()">
-        <a href="/notifications">
-          <i class="pi pi-bell text-3xl" *ngIf="notifications.length > 0" pBadge [value]="notifications.length"
-            [severity]="'danger'"></i>
-          <i class="pi pi-bell text-3xl" *ngIf="notifications.length === 0"></i> Notifications
-        </a>
-      </li>
+      <!-- sidebar.component.html -->
+      
+<li *ngIf="isRH() || isResponsable()">
+  <a href="/notifications">
+    <i class="pi pi-bell text-3xl" 
+       pBadge 
+       [value]="unreadNotificationsCount" 
+       [severity]="'danger'"
+       *ngIf="unreadNotificationsCount > 0"></i>
+    <i class="pi pi-bell text-3xl" *ngIf="unreadNotificationsCount === 0"></i>
+    Notifications
+  </a>
+</li>
       <li>
         <a href="/messages" class="messagerie-item">
           <i class="pi pi-inbox"></i>

@@ -94,33 +94,41 @@
     <!-- Boîte de dialogue pour modifier un stage -->
     <p-dialog header="Modifier le Stage" [(visible)]="editStageVisible" [modal]="true" [style]="{ width: '25rem' }" [position]="'center'">
       <form [formGroup]="editStageForm">
-        <div class="form-group">
+        <!-- Société -->
+        <div class="form-group" [ngClass]="{'has-error': editStageForm.controls['societe'].invalid && editStageForm.controls['societe'].touched}">
           <label for="editSociete">Société du Stage :</label>
           <input pInputText id="editSociete" type="text" formControlName="societe" class="form-control" />
-          <small class="text-danger" *ngIf="editStageForm.controls['societe'].invalid && editStageForm.controls['societe'].touched">
-            *Ce champ est obligatoire.
+          <small class="text-danger" *ngIf="editStageForm.controls['societe'].hasError('required') && editStageForm.controls['societe'].touched">
+            Ce champ est obligatoire.
           </small>
         </div>
-
-        <div class="form-group">
+    
+        <!-- Date de début -->
+        <div class="form-group" [ngClass]="{'has-error': editStageForm.controls['dateDebut'].invalid && editStageForm.controls['dateDebut'].touched}">
           <label for="editDateDebut">Date de Début :</label>
           <input pInputText id="editDateDebut" type="date" formControlName="dateDebut" class="form-control" />
-          <small class="text-danger" *ngIf="editStageForm.controls['dateDebut'].invalid && editStageForm.controls['dateDebut'].touched">
-            *Ce champ est obligatoire.
+          <small class="text-danger" *ngIf="editStageForm.controls['dateDebut'].hasError('required') && editStageForm.controls['dateDebut'].touched">
+            Ce champ est obligatoire.
           </small>
         </div>
-
-        <div class="form-group">
+    
+        <!-- Date de fin -->
+        <div class="form-group" [ngClass]="{'has-error': editStageForm.controls['dateFin'].invalid && editStageForm.controls['dateFin'].touched}">
           <label for="editDateFin">Date de Fin :</label>
           <input pInputText id="editDateFin" type="date" formControlName="dateFin" class="form-control" />
-          <small class="text-danger" *ngIf="editStageForm.controls['dateFin'].invalid && editStageForm.controls['dateFin'].touched">
-            *Ce champ est obligatoire.
+          <small class="text-danger" *ngIf="editStageForm.controls['dateFin'].hasError('required') && editStageForm.controls['dateFin'].touched">
+            Ce champ est obligatoire.
           </small>
         </div>
-
+    
+        <!-- Erreur globale sur les dates -->
+        <div *ngIf="editDateErrorMessage" class="alert alert-danger mt-2">
+          {{ editDateErrorMessage }}
+        </div>
+    
         <div class="form-actions">
-          <button pButton type="button" (click)="editStageVisible = false" class="btn btn-secondary" severity="danger">Annuler</button>
-          <button pButton type="button" (click)="updateStage()" class="btn btn-primary" [disabled]="editStageForm.invalid" severity="success" class="p-button-text">Enregistrer</button>
+          <button pButton type="button" (click)="editStageVisible = false" class="p-button-text" severity="danger">Annuler</button>
+          <button pButton type="button" (click)="updateStage()" class="p-button-text" [disabled]="editStageForm.invalid" severity="success">Enregistrer</button>
         </div>
       </form>
     </p-dialog>

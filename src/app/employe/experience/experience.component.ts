@@ -28,6 +28,7 @@ import { Poste } from '../../poste/model/poste';
 import { PosteService } from '../../poste/service/poste.service';
 import { DirectionService } from '../../direction/service/direction.service';
 import { Direction } from '../../direction/model/Direction';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-experience',
@@ -41,7 +42,7 @@ import { Direction } from '../../direction/model/Direction';
     SplitterModule,
     TableModule,
     InputTextModule,
-
+    CalendarModule,
     DropdownModule,
   ],
   styleUrls: ['./experience.component.css'],
@@ -121,25 +122,44 @@ export class ExperienceComponent implements OnInit {
 
   showDialogAssad(experience: ExperienceAssad) {
     this.selectedExperienceAssad = experience;
+    // Convertir les dates en objets Date si elles sont des strings
+    const dateDebut = experience.dateDebut ? new Date(experience.dateDebut) : null;
+    const dateFin = experience.dateFin ? new Date(experience.dateFin) : null;
+  
+    
+    // Find the complete poste object
+    const selectedPoste = this.postes.find(p => p.titre === experience.poste);
+    // Find the complete direction object
+    const selectedDirection = this.directions.find(d => d.nom_direction === experience.direction);
+  
     this.experienceAssadForm.patchValue({
-      debut: experience.dateDebut,
-      fin: experience.dateFin,
-      poste: experience.poste,
-      direction: experience.direction,
+      debut: dateDebut,
+      fin: dateFin,
+      poste: selectedPoste, // Pass the complete object
+      direction: selectedDirection, // Pass the complete object
       modeAffectation: experience.modeAffectation,
     });
+    
     this.editingAssad = true;
     this.editingAnterieure = false;
   }
 
   showDialogAnterieure(experience: ExperienceAnterieure) {
     this.selectedExperienceAnterieure = experience;
+    
+    const dateDebut = experience.dateDebut ? new Date(experience.dateDebut) : null;
+  const dateFin = experience.dateFin ? new Date(experience.dateFin) : null;
+
+    // Find the complete poste object
+    const selectedPoste = this.postes.find(p => p.titre === experience.poste);
+  
     this.experienceAnterieureForm.patchValue({
-      dateDebut: experience.dateDebut,
-      dateFin: experience.dateFin,
-      poste: experience.poste,
+      dateDebut: dateDebut,
+      dateFin: dateFin,
+      poste: selectedPoste, // Pass the complete object
       societe: experience.societe,
     });
+    
     this.editingAnterieure = true;
     this.editingAssad = false;
   }
@@ -153,15 +173,18 @@ export class ExperienceComponent implements OnInit {
     if (!this.selectedExperienceAssad || this.experienceAssadForm.invalid) {
       return;
     }
-
+  
+    const formValue = this.experienceAssadForm.value;
+    
     const updatedExperience: ExperienceAssad = {
       id: this.selectedExperienceAssad.id,
-      poste: this.experienceAssadForm.value.poste!,
-      dateDebut: this.experienceAssadForm.value.debut!,
-      dateFin: this.experienceAssadForm.value.fin!,
-      direction: this.experienceAssadForm.value.direction!,
-      modeAffectation: this.experienceAssadForm.value.modeAffectation!,
+      poste: formValue.poste.titre, // Extract title from Poste object
+      dateDebut: formValue.debut,
+      dateFin: formValue.fin,
+      direction: formValue.direction.nom_direction, // Extract name from Direction object
+      modeAffectation: formValue.modeAffectation,
     };
+  
 
     this.experienceService
       .modifyExperienceAssad(updatedExperience.id!, updatedExperience)
@@ -182,21 +205,19 @@ export class ExperienceComponent implements OnInit {
       );
   }
   updateExperienceAnterieure() {
-    if (
-      !this.selectedExperienceAnterieure ||
-      this.experienceAnterieureForm.invalid
-    ) {
+    if (!this.selectedExperienceAnterieure || this.experienceAnterieureForm.invalid) {
       return;
     }
-
+  
+    const formValue = this.experienceAnterieureForm.value;
+    
     const updatedExperience: ExperienceAnterieure = {
       id: this.selectedExperienceAnterieure.id,
-      poste: this.experienceAnterieureForm.value.poste!,
-      dateDebut: this.experienceAnterieureForm.value.dateDebut!,
-      dateFin: this.experienceAnterieureForm.value.dateFin!,
-      societe: this.experienceAnterieureForm.value.societe!,
+      poste: formValue.poste.titre, // Extract title from Poste object
+      dateDebut: formValue.dateDebut,
+      dateFin: formValue.dateFin,
+      societe: formValue.societe,
     };
-
     this.experienceService
       .modifyExperienceAnterieure(updatedExperience.id!, updatedExperience)
       .subscribe(

@@ -120,16 +120,77 @@ export class StageComponent implements OnInit{
     this.visible = true;
   }
 
-  updateStage() {
-    if (!this.selectedStage) return;
-    
-    const updatedStage = this.editStageForm.value;
-    this.stageService.updateStage(this.selectedStage.id, updatedStage).subscribe(() => {
-      console.log('Stage mis à jour avec succès');
+  // Ajoutez cette propriété à votre classe
+editDateErrorMessage: string = '';
+
+// Modifiez la méthode updateStage()
+updateStage() {
+  this.editDateErrorMessage = '';
+  
+  if (this.editStageForm.invalid) {
+    this.editStageForm.markAllAsTouched();
+    return;
+  }
+
+  const updatedStage = this.editStageForm.value;
+
+  // Vérification des dates
+  if (updatedStage.dateDebut! >= updatedStage.dateFin!) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erreur de dates',
+      detail: 'La date de fin doit être postérieure à la date de début.'
+    });
+    return;
+  }
+
+  // Vérification du chevauchement (en excluant le stage actuellement édité)
+  if (this.isOverlappingForEdit(updatedStage)) {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Chevauchement détecté',
+      detail: 'Les dates du stage se chevauchent avec un autre stage.'
+    });
+    return;
+  }
+
+  this.stageService.updateStage(this.selectedStage.id, updatedStage).subscribe({
+    next: () => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: 'Stage mis à jour avec succès.'
+      });
       this.getStages();
       this.editStageVisible = false;
-    });
-  }
+      this.stageUpdated.emit();
+    },
+    error: (err) => {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Une erreur est survenue lors de la mise à jour du stage.'
+      });
+    }
+  });
+}
+
+// Ajoutez cette méthode pour vérifier le chevauchement en excluant le stage en cours d'édition
+isOverlappingForEdit(updatedStage: any): boolean {
+  return this.stages.some(stage => {
+    // On ignore le stage qu'on est en train de modifier
+    if (stage.id === this.selectedStage.id) {
+      return false;
+    }
+
+    const start1 = new Date(stage.dateDebut);
+    const end1 = new Date(stage.dateFin);
+    const start2 = new Date(updatedStage.dateDebut);
+    const end2 = new Date(updatedStage.dateFin);
+
+    return (start2 <= end1 && end2 >= start1);
+  });
+}
 
   isOverlapping(newStage: any): boolean {
     return this.stages.some(stage => {

@@ -6,6 +6,17 @@
     background-color: #f8fafc;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
+
+  .back-btn {
+    background: var(--secondary);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    color: var(--text-light);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
   
   /* En-tête de conversation */
   .conversation-header {
@@ -137,29 +148,32 @@
     margin-left: 1rem;
   }
 
-  .avatar-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    min-width: 40px;
-  }
-  
-  /* Style de base avatar */
-  .custom-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #041562;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    color: white;
-    text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+  /* Génération automatique de couleurs d'avatar */
+.avatar-container {
+  position: relative;
+  align-self: flex-start;
+}
+
+.custom-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, 
+    hsl(var(--hue, 220), 80%, 60%), 
+    hsl(calc(var(--hue, 220) + 30), 80%, 45%));
+}
+
+/* Alternance des couleurs pour les participants */
+.avatar-0 { --hue: 220; }
+.avatar-1 { --hue: 160; }
+.avatar-2 { --hue: 300; }
+.avatar-3 { --hue: 40; }
+.avatar-4 { --hue: 120; }
   
   
   .message-avatar img {

@@ -145,180 +145,447 @@
     </p-tabView>
 
     <!-- Dialogues (gardés de votre version originale) -->
-    <p-dialog header="Ajouter une Expérience ASSAD" [(visible)]="visibleAddAssad" [modal]="true" [style]="{ width: '50rem' }">
-        <form [formGroup]="experienceAssadForm" (ngSubmit)="addExperienceAssad()">
-            <div class="p-fluid">
-            
-                <!-- Date de début -->
-                <div class="p-field p-mb-3">
-                    <label for="debut_assad" class="p-text-bold">Date de début :</label>
-                    <input id="debut_assad" type="date" formControlName="debut" pInputText 
-                        class="p-inputtext p-component"
-                        [ngClass]="{'p-invalid': experienceAssadForm.get('debut')?.invalid && experienceAssadForm.get('debut')?.touched}" />
-                    <small *ngIf="experienceAssadForm.get('debut')?.invalid && experienceAssadForm.get('debut')?.touched" class="p-error">
-                        La date de début est requise.
-                    </small>
-                </div>
-            
-                <!-- Date de fin -->
-                <div class="p-field p-mb-3">
-                    <label for="fin_assad" class="p-text-bold">Date de fin :</label>
-                    <input id="fin_assad" type="date" formControlName="fin" pInputText 
-                        class="p-inputtext p-component"
-                        [ngClass]="{'p-invalid': experienceAssadForm.get('fin')?.invalid && experienceAssadForm.get('fin')?.touched}" />
-                    <small *ngIf="experienceAssadForm.get('fin')?.invalid && experienceAssadForm.get('fin')?.touched" class="p-error">
-                        La date de fin est requise.
-                    </small>
-                </div>
-            
-                <!-- Poste -->
-                <div class="p-field p-mb-3">
-                    <label for="poste_assad" class="p-text-bold">Poste :</label>
-                    <p-dropdown id="poste_assad" formControlName="poste" [options]="postes" optionLabel="titre" 
-                        placeholder="Sélectionner un poste" 
-                        [ngClass]="{'p-invalid': experienceAssadForm.get('poste')?.invalid && experienceAssadForm.get('poste')?.touched}" />
+    <p-dialog 
+    header="Ajouter une Expérience ASSAD" 
+    [(visible)]="visibleAddAssad" 
+    [modal]="true" 
+    [style]="{width: '600px', height:'550px'}"
+    [draggable]="false" 
+    [resizable]="false">
+    
+    <form [formGroup]="experienceAssadForm" (ngSubmit)="addExperienceAssad()">
+        <div class="dialog-content">
+            <div class="p-fluid grid">
+                <div class="field col-12">
+                    <label for="add_poste_assad">Poste *</label>
+                    <p-dropdown 
+                        [options]="postes" 
+                        formControlName="poste"
+                        id="add_poste_assad"
+                        optionLabel="titre"
+                        placeholder="Sélectionner un poste"
+                        [showClear]="true"
+                        [filter]="true"
+                        filterPlaceholder="Rechercher...">
+                        <ng-template let-poste pTemplate="item">
+                            <div class="poste-option">
+                                <i class="pi pi-briefcase"></i>
+                                <span>{{ poste.titre }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
                     <small *ngIf="experienceAssadForm.get('poste')?.invalid && experienceAssadForm.get('poste')?.touched" class="p-error">
                         Veuillez sélectionner un poste.
                     </small>
                 </div>
-            
-                <!-- Direction -->
-                <div class="p-field p-mb-3">
-                    <label for="direction_assad" class="p-text-bold">Direction :</label>
-                    <p-dropdown id="direction_assad" formControlName="direction" [options]="directions" optionLabel="nom_direction" 
-                        placeholder="Sélectionner une direction" 
-                        [ngClass]="{'p-invalid': experienceAssadForm.get('direction')?.invalid && experienceAssadForm.get('direction')?.touched}" />
+
+                <div class="field col-12">
+                    <label for="add_direction_assad">Direction *</label>
+                    <p-dropdown 
+                        [options]="directions" 
+                        formControlName="direction"
+                        id="add_direction_assad"
+                        optionLabel="nom_direction"
+                        placeholder="Sélectionner une direction"
+                        [showClear]="true"
+                        [filter]="true"
+                        filterPlaceholder="Rechercher...">
+                        <ng-template let-direction pTemplate="item">
+                            <div class="direction-option">
+                                <i class="pi pi-building"></i>
+                                <span>{{ direction.nom_direction }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
                     <small *ngIf="experienceAssadForm.get('direction')?.invalid && experienceAssadForm.get('direction')?.touched" class="p-error">
                         Veuillez sélectionner une direction.
                     </small>
                 </div>
-            
-                <!-- Mode d'affectation -->
-                <div class="p-field p-mb-3">
-                    <label for="mode_affectation_assad" class="p-text-bold">Mode d'affectation :</label>
-                    <p-dropdown id="mode_affectation_assad" formControlName="modeAffectation" [options]="['CDD', 'CDI', 'Stage']" 
-                        placeholder="Sélectionner" 
-                        [ngClass]="{'p-invalid': experienceAssadForm.get('modeAffectation')?.invalid && experienceAssadForm.get('modeAffectation')?.touched}" />
+
+                <div class="field col-12 md:col-6">
+                    <label for="add_debut_assad">Date de début *</label>
+                    <p-calendar 
+                        formControlName="debut"
+                        id="add_debut_assad"
+                        [showIcon]="true"
+                        icon="pi pi-calendar"
+                        dateFormat="dd/mm/yy"
+                        [showButtonBar]="true"
+                        [required]="true">
+                    </p-calendar>
+                    <small *ngIf="experienceAssadForm.get('debut')?.invalid && experienceAssadForm.get('debut')?.touched" class="p-error">
+                        La date de début est requise.
+                    </small>
+                </div>
+
+                <div class="field col-12 md:col-6">
+                    <label for="add_fin_assad">Date de fin</label>
+                    <p-calendar 
+                        formControlName="fin"
+                        id="add_fin_assad"
+                        [showIcon]="true"
+                        icon="pi pi-calendar"
+                        dateFormat="dd/mm/yy"
+                        [showButtonBar]="true">
+                    </p-calendar>
+                </div>
+
+                <div class="field col-12">
+                    <label for="add_mode_affectation">Mode d'affectation *</label>
+                    <p-dropdown 
+                        [options]="modesAffectation" 
+                        formControlName="modeAffectation"
+                        id="add_mode_affectation"
+                        placeholder="Sélectionner"
+                        [showClear]="true">
+                    </p-dropdown>
                     <small *ngIf="experienceAssadForm.get('modeAffectation')?.invalid && experienceAssadForm.get('modeAffectation')?.touched" class="p-error">
                         Veuillez sélectionner un mode d'affectation.
                     </small>
                 </div>
-            
-                <!-- Boutons -->
-                <div class="p-d-flex p-jc-end">
-                    <button type="button" (click)="visibleAddAssad = false" pButton label="Annuler" icon="pi pi-times" 
-                            class="p-button-text p-button-rounded p-button-secondary p-mr-2"></button>
-                    <button type="submit" pButton label="Ajouter" icon="pi pi-check" class="p-button-primary p-button-rounded" 
-                            [disabled]="experienceAssadForm.invalid"></button>
-                </div>
-            
             </div>
-        </form>
-    </p-dialog>
+        </div>
+    </form>
 
-    <p-dialog header="Ajouter une Expérience Antérieure" [(visible)]="visibleAddAnterieure" [modal]="true" [style]="{ width: '50rem' }">
-        <form [formGroup]="experienceAnterieureForm" (ngSubmit)="addExperienceAnterieure()">
-            <div class="p-fluid">
-                <div class="p-field">
-                    <label for="dateDebut">Date de début :</label>
-                    <input id="dateDebut" type="date" formControlName="dateDebut" pInputText class="p-inputtext p-component" />
-                </div>
-    
-                <div class="p-field">
-                    <label for="dateFin">Date de fin :</label>
-                    <input id="dateFin" type="date" formControlName="dateFin" pInputText class="p-inputtext p-component" />
-                </div>
-    
-                
-                <div class="p-field">
-                    <label for="poste_assad">Poste :</label>
-                    <p-dropdown id="poste_assad" formControlName="poste" [options]="postes" optionLabel="titre" placeholder="Sélectionner un poste" class="p-inputtext" [ngStyle]="{ 'margin-top': '10px' }"  />
-                </div>
-    
-                <div class="p-field">
-                    <label for="societe">Société :</label>
-                    <input id="societe" type="text" formControlName="societe" pInputText class="p-inputtext p-component" />
-                </div>
-    
-                <div class="p-d-flex p-jc-end">
-                    <button type="button" (click)="visibleAddAnterieure = false" pButton label="Annuler" icon="pi pi-times" class="p-button-text p-button-rounded p-button-secondary"></button>
-                    <button type="submit" pButton label="Ajouter" icon="pi pi-check" class="p-button-primary p-button-rounded"></button>
-                </div>
+    <ng-template pTemplate="footer">
+        <button 
+            pButton 
+            pRipple 
+            type="button" 
+            label="Annuler" 
+            icon="pi pi-times" 
+            class="p-button-text"
+            severity="danger"
+            (click)="visibleAddAssad = false"></button>
+        <button 
+            pButton 
+            pRipple 
+            type="submit" 
+            label="Ajouter" 
+            icon="pi pi-check" 
+            class="p-button-text"
+            severity="contrast"
+            (click)="addExperienceAssad()"
+            [disabled]="experienceAssadForm.invalid"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog 
+header="Ajouter une Expérience Antérieure" 
+[(visible)]="visibleAddAnterieure" 
+[modal]="true" 
+[style]="{width: '600px', height:'550px'}"
+[draggable]="false" 
+[resizable]="false">
+
+<form [formGroup]="experienceAnterieureForm" (ngSubmit)="addExperienceAnterieure()">
+    <div class="dialog-content">
+        <div class="p-fluid grid">
+            <div class="field col-12">
+                <label for="add_poste_anterieure">Poste *</label>
+                <p-dropdown 
+                    [options]="postes" 
+                    formControlName="poste"
+                    id="add_poste_anterieure"
+                    optionLabel="titre"
+                    placeholder="Sélectionner un poste"
+                    [showClear]="true"
+                    [filter]="true"
+                    filterPlaceholder="Rechercher...">
+                    <ng-template let-poste pTemplate="item">
+                        <div class="poste-option">
+                            <i class="pi pi-briefcase"></i>
+                            <span>{{ poste.titre }}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <small *ngIf="experienceAnterieureForm.get('poste')?.invalid && experienceAnterieureForm.get('poste')?.touched" class="p-error">
+                    Veuillez sélectionner un poste.
+                </small>
             </div>
-        </form>
-    </p-dialog>
+
+            <div class="field col-12 md:col-6">
+                <label for="add_dateDebut_anterieure">Date de début *</label>
+                <p-calendar 
+                    formControlName="dateDebut"
+                    id="add_dateDebut_anterieure"
+                    [showIcon]="true"
+                    icon="pi pi-calendar"
+                    dateFormat="dd/mm/yy"
+                    [showButtonBar]="true"
+                    [required]="true">
+                </p-calendar>
+                <small *ngIf="experienceAnterieureForm.get('dateDebut')?.invalid && experienceAnterieureForm.get('dateDebut')?.touched" class="p-error">
+                    La date de début est requise.
+                </small>
+            </div>
+
+            <div class="field col-12 md:col-6">
+                <label for="add_dateFin_anterieure">Date de fin</label>
+                <p-calendar 
+                    formControlName="dateFin"
+                    id="add_dateFin_anterieure"
+                    [showIcon]="true"
+                    icon="pi pi-calendar"
+                    dateFormat="dd/mm/yy"
+                    [showButtonBar]="true">
+                </p-calendar>
+            </div>
+
+            <div class="field col-12">
+                <label for="add_societe">Société *</label>
+                <input 
+                    id="add_societe" 
+                    type="text" 
+                    pInputText 
+                    formControlName="societe"
+                    placeholder="Nom de la société">
+                <small *ngIf="experienceAnterieureForm.get('societe')?.invalid && experienceAnterieureForm.get('societe')?.touched" class="p-error">
+                    Veuillez saisir le nom de la société.
+                </small>
+            </div>
+        </div>
+    </div>
+</form>
+
+<ng-template pTemplate="footer">
+    <button 
+        pButton 
+        pRipple 
+        type="button" 
+        label="Annuler" 
+        icon="pi pi-times" 
+        class="p-button-text"
+        severity="danger"
+        (click)="visibleAddAnterieure = false"></button>
+    <button 
+        pButton 
+        pRipple 
+        type="submit" 
+        label="Ajouter" 
+        icon="pi pi-check" 
+        class="p-button-text"
+        severity="contrast"
+        (click)="addExperienceAnterieure()"
+        [disabled]="experienceAnterieureForm.invalid"></button>
+</ng-template>
+</p-dialog>
 </div>
 
 <!-- Ajoutez cette section pour la modification des expériences ASSAD -->
-<div *ngIf="editingAssad" class="edit-experience-container">
-    <div class="edit-experience-card">
-        <h3>Modifier l'expérience ASSAD</h3>
-        
-        <form [formGroup]="experienceAssadForm" (ngSubmit)="updateExperienceAssad()">
-            <div class="form-group">
-                <label>Date de début</label>
-                <input type="date" formControlName="debut" class="form-control">
+<p-dialog 
+    header="Modifier l'expérience ASSAD" 
+    [(visible)]="editingAssad" 
+    [modal]="true" 
+    [style]="{width: '600px', height:'550px'}"
+    [draggable]="false" 
+    [resizable]="false">
+    <form [formGroup]="experienceAssadForm" (ngSubmit)="updateExperienceAssad()">
+    <div class="dialog-content">
+        <div class="p-fluid grid">
+            <div class="field col-12">
+                <label for="edit_poste_assad">Poste *</label>
+                <p-dropdown 
+                    [options]="postes" 
+                    [(ngModel)]="experienceAssadForm.value.poste"
+                    formControlName="poste"
+                    id="edit_poste_assad"
+                    optionLabel="titre"
+                    placeholder="Sélectionner un poste"
+                    [showClear]="true"
+                    [filter]="true"
+                    filterPlaceholder="Rechercher...">
+                    <ng-template let-poste pTemplate="item">
+                        <div class="poste-option">
+                            <i class="pi pi-briefcase"></i>
+                            <span>{{ poste.titre }}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
-            
-            <div class="form-group">
-                <label>Date de fin</label>
-                <input type="date" formControlName="fin" class="form-control">
-            </div>
-            
-            <div class="form-group">
-                <label>Poste</label>
-                <p-dropdown [options]="postes" formControlName="postes" optionLabel="titre"></p-dropdown>
-            </div>
-            
-            <div class="form-group">
-                <label>Direction</label>
-                <p-dropdown [options]="directions" formControlName="directions" optionLabel="nom_direction"></p-dropdown>
-            </div>
-            
-            <div class="form-group">
-                <label>Mode d'affectation</label>
-                <p-dropdown [options]="['CDD', 'CDI', 'Stage']" formControlName="modeAffectation"></p-dropdown>
-            </div>
-            
-            <div class="form-actions">
-                <button pbutton type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
-                <button pbutton type="submit" class="btn btn-primary">Enregistrer</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- Ajoutez cette section pour la modification des expériences antérieures -->
-<!-- Ajoutez cette section pour la modification des expériences antérieures -->
-<div *ngIf="editingAnterieure" class="edit-experience-container">
-    <div class="edit-experience-card">
-        <h3>Modifier l'expérience antérieure</h3>
-        
-        <form [formGroup]="experienceAnterieureForm" (ngSubmit)="updateExperienceAnterieure()">
-            <div class="form-group">
-                <label>Date de début</label>
-                <input type="date" formControlName="dateDebut" class="form-control">
+            <div class="field col-12">
+                <label for="edit_direction_assad">Direction *</label>
+                <p-dropdown 
+                    [options]="directions" 
+                    [(ngModel)]="experienceAssadForm.value.direction"
+                    formControlName="direction"
+                    id="edit_direction_assad"
+                    optionLabel="nom_direction"
+                    placeholder="Sélectionner une direction"
+                    [showClear]="true"
+                    [filter]="true"
+                    filterPlaceholder="Rechercher...">
+                    <ng-template let-direction pTemplate="item">
+                        <div class="direction-option">
+                            <i class="pi pi-building"></i>
+                            <span>{{ direction.nom_direction }}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
             </div>
-            
-            <div class="form-group">
-                <label>Date de fin</label>
-                <input type="date" formControlName="dateFin" class="form-control">
+
+            <div class="field col-12 md:col-6">
+                <label for="edit_debut_assad">Date de début *</label>
+                <p-calendar 
+                    [(ngModel)]="experienceAssadForm.value.debut"
+                    formControlName="debut"
+                    id="edit_debut_assad"
+                    [showIcon]="true"
+                    icon="pi pi-calendar"
+                    dateFormat="dd/mm/yy"
+                    [showButtonBar]="true"
+                    [required]="true">
+                </p-calendar>
             </div>
-            
-            <div class="form-group">
-                <label>Poste</label>
-                <p-dropdown [options]="postes" formControlName="postes" optionLabel="titre"></p-dropdown>
+
+            <div class="field col-12 md:col-6">
+                <label for="edit_fin_assad">Date de fin *</label>
+                <p-calendar 
+                    [(ngModel)]="experienceAssadForm.value.fin"
+                    formControlName="fin"
+                    id="edit_fin_assad"
+                    [showIcon]="true"
+                    icon="pi pi-calendar"
+                    dateFormat="dd/mm/yy"
+                    [showButtonBar]="true">
+                </p-calendar>
             </div>
-            
-            <div class="form-group">
-                <label>Société</label>
-                <input pInputText type="text" formControlName="societe" class="form-control">
+
+            <div class="field col-12">
+                <label for="edit_mode_affectation">Mode d'affectation *</label>
+                <p-dropdown 
+                    [options]="modesAffectation" 
+                    [(ngModel)]="experienceAssadForm.value.modeAffectation"
+                    formControlName="modeAffectation"
+                    id="edit_mode_affectation"
+                    placeholder="Sélectionner"
+                    [showClear]="true">
+                </p-dropdown>
             </div>
-            
-            <div class="form-actions">
-                <button pButton type="button" class="btn btn-secondary" (click)="cancelEdit()">Annuler</button>
-                <button pButton type="submit" class="btn btn-primary">Enregistrer</button>
-            </div>
-        </form>
+        </div>
+
+
     </div>
-</div>
+
+    
+</form>
+<ng-template pTemplate="footer">
+    <button 
+        pButton 
+        pRipple 
+        type="button" 
+        label="Annuler" 
+        icon="pi pi-times" 
+        class="p-button-text"
+        severity="danger"
+        (click)="cancelEdit()"></button>
+    <button 
+        pButton 
+        pRipple 
+        type="button" 
+        label="Mettre à jour" 
+        icon="pi pi-check" 
+        class="p-button-text"
+        severity="contrast"
+        (click)="updateExperienceAssad()"
+        [disabled]="experienceAssadForm.invalid"></button>
+</ng-template>
+</p-dialog>
+<!-- Ajoutez cette section pour la modification des expériences antérieures -->
+<!-- Ajoutez cette section pour la modification des expériences antérieures -->
+<p-dialog 
+    header="Modifier l'expérience Antérieure" 
+    [(visible)]="editingAnterieure" 
+    [modal]="true" 
+    [style]="{width: '600px', height:'550px'}"
+    [draggable]="false" 
+    [resizable]="false">
+    
+    <form [formGroup]="experienceAnterieureForm" (ngSubmit)="updateExperienceAnterieure()">
+        <div class="dialog-content">
+            <div class="p-fluid grid">
+                <div class="field col-12">
+                    <label for="edit_poste_anterieure">Poste *</label>
+                    <p-dropdown 
+                        [options]="postes" 
+                        [(ngModel)]="experienceAnterieureForm.value.poste"
+                        formControlName="poste"
+                        id="edit_poste_anterieure"
+                        optionLabel="titre"
+                        placeholder="Sélectionner un poste"
+                        [showClear]="true"
+                        [filter]="true"
+                        filterPlaceholder="Rechercher...">
+                        <ng-template let-poste pTemplate="item">
+                            <div class="poste-option">
+                                <i class="pi pi-briefcase"></i>
+                                <span>{{ poste.titre }}</span>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+
+                <div class="field col-12 md:col-6">
+                    <label for="edit_dateDebut_anterieure">Date de début *</label>
+                    <p-calendar 
+                        [(ngModel)]="experienceAnterieureForm.value.dateDebut"
+                        formControlName="dateDebut"
+                        id="edit_dateDebut_anterieure"
+                        [showIcon]="true"
+                        icon="pi pi-calendar"
+                        dateFormat="dd/mm/yy"
+                        [showButtonBar]="true"
+                        [required]="true">
+                    </p-calendar>
+                </div>
+
+                <div class="field col-12 md:col-6">
+                    <label for="edit_dateFin_anterieure">Date de fin</label>
+                    <p-calendar 
+                        [(ngModel)]="experienceAnterieureForm.value.dateFin"
+                        formControlName="dateFin"
+                        id="edit_dateFin_anterieure"
+                        [showIcon]="true"
+                        icon="pi pi-calendar"
+                        dateFormat="dd/mm/yy"
+                        [showButtonBar]="true">
+                    </p-calendar>
+                </div>
+
+                <div class="field col-12">
+                    <label for="edit_societe">Société *</label>
+                    <input 
+                        id="edit_societe" 
+                        type="text" 
+                        pInputText 
+                        [(ngModel)]="experienceAnterieureForm.value.societe"
+                        formControlName="societe"
+                        placeholder="Nom de la société">
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <button 
+            pButton 
+            pRipple 
+            type="button" 
+            label="Annuler" 
+            icon="pi pi-times" 
+            class="p-button-text"
+            severity="danger"
+            (click)="cancelEdit()"></button>
+        <button 
+            pButton 
+            pRipple 
+            type="button" 
+            label="Mettre à jour" 
+            icon="pi pi-check" 
+            class="p-button-text"
+            severity="contrast"
+            (click)="updateExperienceAnterieure()"
+            [disabled]="experienceAnterieureForm.invalid"></button>
+    </ng-template>
+</p-dialog>

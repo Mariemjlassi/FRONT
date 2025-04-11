@@ -11,5 +11,7 @@ export interface MessageDto {
   lu?: boolean;
   messageParent?: Message;
   reponses?: Message[];
+  important:any;
+  tags:any;
   }
   

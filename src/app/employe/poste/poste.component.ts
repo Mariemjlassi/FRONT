@@ -103,30 +103,53 @@ export class PosteComponent {
       this.employeservice
         .getPosteDetails(this.employeId, poste.posteId)
         .subscribe(
-          (data) => {
+          (data: any) => {
             console.log(data);
+            
+            // Find the complete poste object from the postes array
+            const fullPoste = this.postes.find(p => p.id === poste.posteId);
+            
             this.selectedPosteDetails = {
               ...data,
-              posteId: poste.posteId, // Assurez-vous que posteId est bien inclus
-              titre: poste.titre, // Ajoute le titre du poste à l'objet
+              posteId: poste.posteId,
+              titre: fullPoste?.titre || poste.titre, // Use the full poste object's title if available
               dateDebut: data.dateDebut ? new Date(data.dateDebut) : null,
               dateFin: data.dateFin ? new Date(data.dateFin) : null,
             };
-            this.selectedPoste = poste; // Assurez-vous que selectedPoste est bien défini
-            this.updateDialog = true;
-
-            // Vérifiez que selectedPoste et selectedPosteDetails contiennent bien posteId
-            console.log('selectedPoste.posteId:', this.selectedPoste.posteId);
-            console.log(
-              'selectedPosteDetails.posteId:',
-              this.selectedPosteDetails.posteId
-            );
+  
+            // Set the selected poste
+            this.selectedPoste = fullPoste || poste;
+            
+            // Load directions for this poste
+            this.posteService.getDirectionsByPosteId(poste.posteId).subscribe(directions => {
+              this.directions = directions;
+              
+              // Find and select the matching direction
+              this.selectedDirection = this.directions.find(d => 
+                d.nom_direction === data.nomDirection
+              );
+              
+              // Load sites for the selected direction
+              if (this.selectedDirection) {
+                this.directionService.getSitesByDirection(this.selectedDirection.id)
+                  .subscribe(sites => {
+                    this.sites = sites;
+                    
+                    // Find and select the matching site
+                    this.selectedSite = this.sites.find(s => 
+                      s.nom_site === data.nomSite
+                    );
+                    
+                    // Now open the dialog after all data is loaded
+                    this.updateDialog = true;
+                  });
+              } else {
+                this.updateDialog = true;
+              }
+            });
           },
           (error) => {
-            console.error(
-              'Erreur lors de la récupération des détails :',
-              error
-            );
+            console.error('Erreur lors de la récupération des détails :', error);
           }
         );
     }

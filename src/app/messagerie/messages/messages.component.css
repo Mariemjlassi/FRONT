@@ -176,7 +176,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: #041562;
+    background-color: #2B3467;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -184,7 +184,6 @@
     font-size: 14px;
     color: white;
     text-transform: uppercase;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   /* Couleurs d'avatar prédéfinies */
@@ -408,3 +407,65 @@
       height: calc(100vh - 200px);
     }
   }
+  /* Ajouter ces styles au fichier CSS */
+
+/* Animation pour les nouveaux messages */
+@keyframes newMessagePulse {
+  0% { background-color: #f8fafc; }
+  50% { background-color: #f0f7ff; }
+  100% { background-color: #f8fafc; }
+}
+
+.message-item.unread {
+  animation: newMessagePulse 2s ease-in-out;
+}
+
+/* Effet de survol plus visible */
+.message-item:hover {
+  background-color: #f1f5f9;
+  transform: translateX(2px);
+  transition: all 0.2s ease;
+}
+
+/* Boutons plus accessibles */
+.primary-btn, .action-btn {
+  transition: all 0.2s ease;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+/* Indicateur de message non lu plus visible */
+.message-item.unread .sender {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.message-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #3b82f6;
+  border-radius: 0 3px 3px 0;
+}
+
+/* Badge pour le nombre de messages non lus */
+.unread-badge {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  margin-left: 8px;
+}
+
+/* Amélioration de la zone de recherche active */
+.search__input:focus {
+  background-color: white;
+  box-shadow: 0 0 0 2px #bfdbfe;
+}

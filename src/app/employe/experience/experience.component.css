@@ -206,6 +206,20 @@
   margin-top: 1rem;
 }
 
+.dialog-content {
+  padding: 1rem 0;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+}
 /* Bordures colorées pour différencier les types */
 .assad-card {
   border-left: 4px solid #1976d2;

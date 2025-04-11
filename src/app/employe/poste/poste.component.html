@@ -10,15 +10,14 @@
         <p-button 
           label="Nouveau Poste" 
           icon="pi pi-plus" 
-          styleClass="p-button-success mr-2" 
+          styleClass="p-button-text" 
+          severity="info"
           (onClick)="openNew()" 
           [rounded]="true" />
         
         
           
-        <span class="p-buttonset ml-2">
         
-        </span>
       </div>
     </ng-template>
   </p-toolbar>
@@ -270,7 +269,7 @@
           <label for="titre">Poste *</label>
           <p-dropdown 
             [options]="postes" 
-            [(ngModel)]="poste" 
+            [(ngModel)]="selectedPoste" 
             optionLabel="titre" 
             placeholder="Sélectionner un poste"
             [showClear]="true"

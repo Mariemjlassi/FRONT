@@ -226,9 +226,9 @@ getAncienneteColor(dateRecrutement: Date): "success" | "info" | "warn" | "danger
   
   const anciennete = new Date().getFullYear() - new Date(dateRecrutement).getFullYear();
 
-  if (anciennete < 2) return "info";       // ✅ Bleu clair pour "Nouveau"
-  if (anciennete < 5) return "warn";       // ✅ Orange pour "Expérimenté"
-  return "success";                        // ✅ Vert pour "Senior"
+  if (anciennete < 2) return "info";       
+  if (anciennete < 5) return "warn";       
+  return "success";                       
 }
 
   
@@ -258,7 +258,7 @@ goToEditEmployee(employe: any) {
   }
 
   getPhotoUrl(employe: any): string {
-    return employe.photo ? employe.photo : (employe.sexe === 'Femme' ? 'femme.png' : 'homme.png');
+    return employe.photo ? employe.photo : (employe.sexe === 'Femme' ? 'f.png' : 'h.png');
   }
   
   fetchDisciplines(employeId: number): void {

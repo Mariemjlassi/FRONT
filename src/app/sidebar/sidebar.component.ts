@@ -18,17 +18,37 @@ export class SidebarComponent  implements OnInit{
   userId: number | null = null;
   notifications: any[] = [];
   userDetails: any = {};
+  unreadNotificationsCount: number = 0;
 
-  constructor(private authService:AuthService, private notificationService: NotificationService , private http: HttpClient){
-    
-  }
+  
+  private refreshInterval: any;
+
+  constructor(
+    private authService: AuthService, 
+    private notificationService: NotificationService,
+    private http: HttpClient
+  ) {}
+
   ngOnInit(): void {
     this.userRole = this.authService.getUserRole();
     this.userId = Number(localStorage.getItem('userId'));
     if (this.userId) {
       this.loadUserDetails(this.userId);
+      this.loadUnreadNotifications();
+      
+      // Rafraîchir toutes les 30 secondes
+      this.refreshInterval = setInterval(() => {
+        this.loadUnreadNotifications();
+      }, 30000);
     }
   }
+
+  ngOnDestroy(): void {
+    if (this.refreshInterval) {
+      clearInterval(this.refreshInterval);
+    }
+  }
+
 
   isRH(): boolean {
      
@@ -53,13 +73,33 @@ export class SidebarComponent  implements OnInit{
     this.authService.logout();
   }
 
-
+  loadUnreadNotifications(): void {
+    if (this.userId) {
+      this.notificationService.getNotifications(this.userId).subscribe({
+        next: (notifications) => {
+          this.unreadNotificationsCount = notifications.filter(
+            (notification) => !notification.lue
+          ).length;
+        },
+        error: (error) => {
+          console.error('Erreur lors du chargement des notifications:', error);
+        }
+      });
+    }
+  }
 
   markNotificationsAsRead() {
     if (this.userId) {
-      this.notificationService.markAsRead(this.userId).subscribe(() => {
-        this.notifications = []; 
-      });
+      console.log('Marking notifications as read for user:', this.userId);
+      this.notificationService.markAsRead(this.userId).subscribe(
+        () => {
+          console.log('Notifications marked as read successfully');
+          this.unreadNotificationsCount = 0;
+        },
+        (error) => {
+          console.error('Error marking notifications as read:', error);
+        }
+      );
     }
   }
 

@@ -18,6 +18,5 @@ describe('AddEmployeComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
   });
 });

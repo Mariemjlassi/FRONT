@@ -288,6 +288,8 @@ export class AddEmployeComponent implements OnInit {
     // Récupérer les dates de début et de fin
     const dateDebut = this.addEmployeeForm.controls['dateDebut'].value;
     const dateFin = this.addEmployeeForm.controls['dateFin'].value;
+  
+    
     console.log('Poste:', posteId);
     console.log('Direction:', direction.id);
     console.log('Site:', site.id);
